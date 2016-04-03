@@ -17,6 +17,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "6.0"
 
   s.source_files  = "FCXUniversial/FCXDiscover/", "FCXUniversial/FCXCategory/", "FCXUniversial/FCXUniversial/", "FCXUniversial/FCXShare/", "FCXUniversial/FCXAdvert/"
+s.public_header_files = "UMengSocial/"
 
  s.vendored_libraries = "FCXUniversial/FCXAdvert/libGDTMobSDK.a"
  s.vendored_frameworks = "FCXUniversial/FCXAdvert/GoogleMobileAds.framework"
