@@ -39,7 +39,7 @@ s.resources = "FCXUniversial/FCXShare/ShareIcon/*.png", "UMSocial//**/*.{bundle,
 #s.public_header_files = "UMengSocial/Umeng_SDK_Social_iOS_ARM64_5.0/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI"
 
  s.vendored_libraries = "FCXUniversial/FCXAdvert/libGDTMobSDK.a", "UMSocial/**/*.a"
- s.vendored_frameworks = "FCXUniversial/FCXAdvert/GoogleMobileAds.framework"
+ s.vendored_frameworks = "FCXUniversial/FCXAdvert/GoogleMobileAds.framework", "UMSocial/**/*.framework", "UMSocial/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI/TencentOpenAPI.framework"
 
   s.frameworks  = "AdSupport", "CoreLocation", "SystemConfiguration", "CoreTelephony", "Security", "StoreKit", "QuartzCore", "AudioToolbox", "AVFoundation", "CoreGraphics", "CoreMedia", "EventKit", "EventKitUI", "MessageUI", "CoreMotion", "MediaPlayer", "MessageUI", "CoreLocation", "Foundation", "WebKit"
 
