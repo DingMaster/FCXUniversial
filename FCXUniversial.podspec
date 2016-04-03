@@ -17,6 +17,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "6.0"
 
   s.source_files  = "FCXUniversial/FCXDiscover/", "FCXUniversial/FCXCategory/", "FCXUniversial/FCXUniversial/", "FCXUniversial/FCXAdvert/", "FCXUniversial/FCXShare/"
+s.resources = "FCXUniversial/FCXShare/ShareIcon/*.png"
 #s.public_header_files = "UMengSocial/Umeng_SDK_Social_iOS_ARM64_5.0/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI"
 
  s.vendored_libraries = "FCXUniversial/FCXAdvert/libGDTMobSDK.a"
@@ -31,7 +32,7 @@ s.libraries = "z"
 
   s.dependency "SDWebImage", "~> 3.7.5"
   s.dependency "UMengAnalytics", "~> 3.6.6"
-s.dependency "UMengSocial", "~> 5.0"
+#s.dependency "UMengSocial", "~> 5.0"
   s.dependency "UMOnlineConfig", "~> 0.1.0"
   s.dependency "UMengFeedback", "~> 2.3.4"
 
