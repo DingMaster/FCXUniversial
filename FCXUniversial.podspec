@@ -16,8 +16,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/FCXPods/FCXUniversial.git", :tag => "0.0.1" }
   s.platform     = :ios, "6.0"
 
-  s.source_files  = "FCXUniversial/FCXDiscover/", "FCXUniversial/FCXCategory/", "FCXUniversial/FCXUniversial/", "FCXUniversial/FCXAdvert/"
-#, "FCXUniversial/FCXShare/"
+  s.source_files  = "FCXUniversial/FCXDiscover/", "FCXUniversial/FCXCategory/", "FCXUniversial/FCXUniversial/", "FCXUniversial/FCXAdvert/", "FCXUniversial/FCXShare/"
 #s.public_header_files = "UMengSocial/Umeng_SDK_Social_iOS_ARM64_5.0/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI"
 
  s.vendored_libraries = "FCXUniversial/FCXAdvert/libGDTMobSDK.a"
