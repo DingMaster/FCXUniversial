@@ -32,7 +32,7 @@ s.libraries = "z"
 
   s.dependency "SDWebImage", "~> 3.7.5"
   s.dependency "UMengAnalytics", "~> 3.6.6"
-#s.dependency "UMengSocial", "~> 5.0"
+s.dependency "UMengSocial", "~> 5.0"
   s.dependency "UMOnlineConfig", "~> 0.1.0"
   s.dependency "UMengFeedback", "~> 2.3.4"
 
