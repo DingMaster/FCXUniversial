@@ -16,9 +16,9 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/FCXPods/FCXUniversial.git", :tag => "0.0.1" }
   s.platform     = :ios, "6.0"
 
-s.source_files  = "FCXUniversial/FCXDiscover/", "FCXUniversial/FCXCategory/", "FCXUniversial/FCXUniversial/", "FCXUniversial/FCXAdvert/", "FCXUniversial/FCXShare/"
+s.source_files  = "FCXUniversial/FCXDiscover/", "FCXUniversial/FCXCategory/", "FCXUniversial/FCXUniversial/", "FCXUniversial/FCXAdvert/"
 
-s.resources = "FCXUniversial/FCXShare/ShareIcon/*.png"
+#s.resources = "FCXUniversial/FCXShare/ShareIcon/*.png"
 
 #"UMSocial/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI/TencentOpenApi_IOS_Bundle.bundle", UMSocial/UMSocial_Sdk_Extra_Frameworks/SinaSSO/WeiboSDK.bundle,
 #"UMSocial/UMSocial_Sdk_5.0.1/SocialSDKXib/*.xib",
