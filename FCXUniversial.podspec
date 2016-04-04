@@ -25,7 +25,7 @@ s.source_files  = "FCXUniversial/FCXDiscover/", "FCXUniversial/FCXCategory/", "F
   s.frameworks  = "AdSupport", "CoreLocation", "SystemConfiguration", "CoreTelephony", "Security", "StoreKit", "QuartzCore", "AudioToolbox", "AVFoundation", "CoreGraphics", "CoreMedia", "EventKit", "EventKitUI", "MessageUI", "CoreMotion", "MediaPlayer", "MessageUI", "CoreLocation", "Foundation", "WebKit"
 
 
-s.libraries = "z", "icon", "sqlite3", "stdc++"
+s.libraries = "z", "iconv", "sqlite3", "stdc++"
 
 
   s.dependency "SDWebImage", "~> 3.7.5"
