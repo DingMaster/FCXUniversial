@@ -10,12 +10,6 @@
 #define FCXDefine_h
 
 
-#pragma mark - 第三方的key、应用APPID
-#define APPID @"1079844649"//应用的appID
-#define UMENG_KEY @"56c561b1e0f55aff1e003202"
-#define ADMOBID @""
-
-
 #pragma mark - 屏幕宽高
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
 #define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
@@ -49,8 +43,8 @@
 #define DBFFUNCLOG(xx, ...) NSLog(@"%s(%d): " xx, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
 #else
-#define DBLog(...) /* */
-#define DBFuncLog(xx, ...)
+#define DBLOG(...) /* */
+#define DBFUNCLOG(xx, ...)
 #endif
 
 

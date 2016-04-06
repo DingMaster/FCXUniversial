@@ -22,10 +22,7 @@
     UIView *_bottomView;
     CGFloat _bottomHeight;
     UIButton *_cancelButton;
-    BOOL showAll;
 }
-
-@property (nonatomic, unsafe_unretained) FCXShareType shareType;
 
 @end
 
@@ -40,14 +37,12 @@
     return shareManager;
 }
 
--(id)init
-{
+- (id)init {
     if (self = [super init]) {
         self.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         self.userInteractionEnabled = YES;
         self.backgroundColor = [UIColor colorWithWhite:0 alpha:.6];
         
-        showAll = YES;
         [self judgeBottomHeight];
 
         _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, _bottomHeight)];
@@ -77,8 +72,8 @@
 }
 
 //根据第三方平台是否安装情况判断显示高度
--(void)judgeBottomHeight {
-    if (showAll || [WXApi isWXAppInstalled] && [QQApiInterface isQQInstalled]){
+- (void)judgeBottomHeight {
+    if ([WXApi isWXAppInstalled] && [QQApiInterface isQQInstalled]){
         _bottomHeight = 265;
     }else{
         _bottomHeight = 265 - 80;
@@ -86,7 +81,7 @@
 }
 
 #pragma mark - 创建所有的分享按钮（每次show的时候都需要调用，因为本地的第三方软件随时可能发生变化，删除或者下载）
--(void)createShareButtons {
+- (void)createShareButtons {
     int i = 0;
     for (int j = 0; j < 7; j++) {
         CGFloat buttonWidth = 65;
@@ -97,70 +92,71 @@
         switch (j) {
             case 0:
             {//微信
-                if (showAll || [WXApi isWXAppInstalled]) {
+                if ([WXApi isWXAppInstalled]) {
                     i++;
-                    shareButton = [self createShareButtonWithFrame:buttonFrame tag:100+j];
-                    [shareButton setImage:[UIImage imageNamed:@"share_wx"] forState:UIControlStateNormal];
-                    [shareButton setImage:[UIImage imageNamed:@"share_wx_h"] forState:UIControlStateHighlighted];
-                    [shareButton setTitle:@"微信好友" forState:UIControlStateNormal];
-                    [shareButton setTitle:@"微信" forState:UIControlStateNormal];
+                    shareButton = [self createShareButtonWithFrame:buttonFrame
+                                                               tag:100+j
+                                                             title:@"微信"
+                                                       normalImage:@"share_wx"
+                                                  highlightedImage:@"share_wx_h"];
                 }
             }
                 break;
             case 1:
             {//微信朋友圈
-                if (showAll || [WXApi isWXAppInstalled]) {
+                if ([WXApi isWXAppInstalled]) {
                     i++;
-                    shareButton = [self createShareButtonWithFrame:buttonFrame tag:100+j];
-                    [shareButton setImage:[UIImage imageNamed:@"share_wxfc"] forState:UIControlStateNormal];
-                    [shareButton setImage:[UIImage imageNamed:@"share_wxfc_h"] forState:UIControlStateHighlighted];
-                    [shareButton setTitle:@"微信朋友圈" forState:UIControlStateNormal];
+                    shareButton = [self createShareButtonWithFrame:buttonFrame
+                                                               tag:100+j
+                                                             title:@"微信朋友圈"
+                                                       normalImage:@"share_wxfc"
+                                                  highlightedImage:@"share_wxfc_h"];
                 }
             }
                 break;
             case 2:
             {//QQ
-                if (showAll||[QQApiInterface isQQInstalled]) {
-                    shareButton = [self createShareButtonWithFrame:buttonFrame tag:100+j];
+                if ([QQApiInterface isQQInstalled]) {
                     i++;
-                    [shareButton setImage:[UIImage imageNamed:@"share_qq"] forState:UIControlStateNormal];
-                    [shareButton setImage:[UIImage imageNamed:@"share_qq_h"] forState:UIControlStateHighlighted];
-                    [shareButton setTitle:@"QQ" forState:UIControlStateNormal];
+                    shareButton = [self createShareButtonWithFrame:buttonFrame
+                                                               tag:100+j
+                                                             title:@"QQ"
+                                                       normalImage:@"share_qq"
+                                                  highlightedImage:@"share_qq_h"];
                 }
             }
                 break;
             case 3:
             {//QQ空间
-                if (showAll||[QQApiInterface isQQInstalled]) {
-                    shareButton = [self createShareButtonWithFrame:buttonFrame tag:100+j];
+                if ([QQApiInterface isQQInstalled]) {
                     i++;
-                    
-                    [shareButton setImage:[UIImage imageNamed:@"share_qqzone"] forState:UIControlStateNormal];
-                    [shareButton setImage:[UIImage imageNamed:@"share_qqzone_h"] forState:UIControlStateHighlighted];
-                    [shareButton setTitle:@"QQ空间" forState:UIControlStateNormal];
+                    shareButton = [self createShareButtonWithFrame:buttonFrame
+                                                               tag:100+j
+                                                             title:@"QQ空间"
+                                                       normalImage:@"share_qqzone"
+                                                  highlightedImage:@"share_qqzone_h"];
                 }
             }
                 break;
             case 4:
             {//新浪微博
                 i++;
-                shareButton = [self createShareButtonWithFrame:buttonFrame tag:100+j];
-                
-                [shareButton setTitle:@"新浪微博" forState:UIControlStateNormal];
-                
-                [shareButton setImage:[UIImage imageNamed:@"share_sina"] forState:UIControlStateNormal];
-                [shareButton setImage:[UIImage imageNamed:@"share_sina_h"] forState:UIControlStateHighlighted];
+                shareButton = [self createShareButtonWithFrame:buttonFrame
+                                                           tag:100+j
+                                                         title:@"新浪微博"
+                                                   normalImage:@"share_sina"
+                                              highlightedImage:@"share_sina_h"];
             }
                 break;
             case 5:
             {//短信
-                if(showAll||[MFMessageComposeViewController canSendText]) {
+                if([MFMessageComposeViewController canSendText]) {
                     i++;
-                    shareButton =  [self createShareButtonWithFrame:buttonFrame tag:100+j];
-                    [shareButton setTitle:@"短信" forState:UIControlStateNormal];
-                    
-                    [shareButton setImage:[UIImage imageNamed:@"share_sms"] forState:UIControlStateNormal];
-                    [shareButton setImage:[UIImage imageNamed:@"share_sms_h"] forState:UIControlStateHighlighted];
+                    shareButton = [self createShareButtonWithFrame:buttonFrame
+                                                               tag:100+j
+                                                             title:@"短信"
+                                                       normalImage:@"share_sms"
+                                                  highlightedImage:@"share_sms_h"];
                 }
             }
                 break;
@@ -170,8 +166,11 @@
     }
 }
 
--(UIButton *)createShareButtonWithFrame:(CGRect)frame tag:(int)tag
-{
+- (UIButton *)createShareButtonWithFrame:(CGRect)frame
+                                     tag:(int)tag
+                                   title:(NSString *)title
+                             normalImage:(NSString *)normalImage
+                        highlightedImage:(NSString *)highlightedImage {
     UIButton *button = (UIButton *)[_bottomView viewWithTag:tag];
     if ([button isKindOfClass:[UIButton class]]) {
         button.frame = frame;
@@ -180,6 +179,9 @@
     button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = frame;
     button.tag = tag;
+    [button setTitle:title forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:normalImage] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:highlightedImage] forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(shareAction:) forControlEvents:UIControlEventTouchUpInside];
     button.titleEdgeInsets = UIEdgeInsetsMake(80, -65, 0, 0);
     if ([UIDevice currentDevice].systemVersion.floatValue < 7.0) {
@@ -194,12 +196,11 @@
     return button;
 }
 
--(void)tapAction
-{
+- (void)tapAction {
     [self dismissView];
 }
 
--(void)showShareView {
+- (void)showShareView {
     //每次显示分享界面的时候，需要重新判断显示的分享平台
     for (UIButton *button in _bottomView.subviews) {
         if ([button isKindOfClass:[UIButton class]]) {
@@ -226,7 +227,7 @@
     }];
 }
 
--(void)dismissView {
+- (void)dismissView {
     __weak typeof(self) weakSelf = self;
     UIView *weakBottomView = _bottomView;
     [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
@@ -237,43 +238,50 @@
     }];
 }
 
+- (void)setShareType:(FCXShareType)shareType {
+    _shareType = shareType;
+
+    switch (shareType) {
+        case FCXShareTypeDefault:
+        {
+            [[UMSocialData defaultData].urlResource setResourceType:UMSocialUrlResourceTypeDefault url:nil];
+            self.musicURL = nil;
+        }
+            break;
+        case FCXShareTypeImage:
+        {
+            [[UMSocialData defaultData].urlResource setResourceType:UMSocialUrlResourceTypeImage url:nil];
+            self.musicURL = nil;
+            self.shareContent = nil;
+        }
+            break;
+        case FCXShareTypeMusic:
+        {
+            [[UMSocialData defaultData].urlResource setResourceType:UMSocialUrlResourceTypeMusic url:self.musicURL];
+        }
+            break;
+    }
+}
+
 #pragma mark - 邀请好友的分享
--(void)showInviteFriendsShareView {
-    [[UMSocialData defaultData].urlResource setResourceType:UMSocialUrlResourceTypeDefault url:nil];
-    
-    self.musicURL = nil;
+- (void)showInviteFriendsShareView {
     self.shareType = FCXShareTypeDefault;
-    
-    self.shareTitle = @"铃声大全";
-    self.shareContent = @"最好听的铃声尽在【铃声大全】，快来下载使用吧！";
-    self.shareURL = [NSString stringWithFormat:@"http://itunes.apple.com/cn/app/id%@?mt=8", APPID];
-    
-    NSDictionary *infoPlist = [[NSBundle mainBundle] infoDictionary];
-    NSString *icon = [[infoPlist valueForKeyPath:@"CFBundleIcons.CFBundlePrimaryIcon.CFBundleIconFiles"] lastObject];
-    self.shareImage = [UIImage imageNamed:icon];
     [self showShareView];
 }
 
 #pragma mark - 只分享图片
-
 - (void)showImageShare {
-    self.musicURL = nil;
-    self.shareContent = nil;
     self.shareType = FCXShareTypeImage;
     [self showShareView];
 }
 
 #pragma mark -  带音乐的分享
--(void)showMusicShare {
-    [[UMSocialData defaultData].urlResource setResourceType:UMSocialUrlResourceTypeMusic url:self.musicURL];
-    
+- (void)showMusicShare {
     self.shareType = FCXShareTypeMusic;
-
-    self.shareURL = [NSString stringWithFormat:@"http://itunes.apple.com/cn/app/id%@?mt=8", APPID];
     [self showShareView];
 }
 
--(void)shareMusicToWXWithType:(int)type {
+- (void)shareMusicToWXWithType:(int)type {
     WXMediaMessage *message = [WXMediaMessage message];
     message.title = self.shareTitle;
     message.description = self.shareContent;
@@ -293,7 +301,7 @@
     [WXApi sendReq:req];
 }
 
--(void)shareMusicToQQWithType:(int)type {
+- (void)shareMusicToQQWithType:(int)type {
     QQApiAudioObject *audioObj =
     [QQApiAudioObject objectWithURL:[NSURL URLWithString:self.shareURL]
                               title:self.shareTitle
@@ -310,15 +318,41 @@
     }
 }
 
-#pragma mark - 分享
+- (void)shareToWXSession {
+    [self shareToPlatform:FCXSharePlatformWXSession];
+}
 
--(void)shareAction:(UIButton *)button {
+- (void)shareToWXTimeline {
+    [self shareToPlatform:FCXSharePlatformWXTimeline];
+}
+
+- (void)shareToQQ {
+    [self shareToPlatform:FCXSharePlatformQQ];
+}
+
+- (void)shareToQzone {
+    [self shareToPlatform:FCXSharePlatformQzone];
+}
+
+- (void)shareToSina {
+    [self shareToPlatform:FCXSharePlatformSina];
+}
+
+- (void)shareToSms {
+    [self shareToPlatform:FCXSharePlatformSms];
+}
+
+- (void)shareToPlatform:(FCXSharePlatform)platform {
+    UIButton *button = (UIButton *)[_bottomView viewWithTag:platform];
+    [self shareAction:button];
+}
+
+#pragma mark - 分享
+- (void)shareAction:(UIButton *)button {
     [self dismissView];
     
     NSString *shareContent = self.shareContent;
-    
     UIImage *shareImage = self.shareImage;
-    
     NSString *shareType = @"";
     
     switch (button.tag) {
@@ -418,15 +452,14 @@
                 shareContent = [self getShortShareContent];
 
             }else if (self.shareType == FCXShareTypeImage) {//qq空间必须有内容
-                [UMSocialData defaultData].extConfig.qzoneData.url = nil;
-                [UMSocialData defaultData].extConfig.qzoneData.title = nil;
+                [UMSocialData defaultData].extConfig.qzoneData.url = self.shareURL;
+                [UMSocialData defaultData].extConfig.qzoneData.title = self.shareTitle;
  
             }else if (self.shareType == FCXShareTypeMusic) {
                 
                 //音乐分享需要单独调用腾讯的，否则音乐url与跳转url冲突
                 [self shareMusicToQQWithType:1];
                 return;
-
             }
         }
             break;
@@ -446,7 +479,7 @@
             }else if (self.shareType == FCXShareTypeImage) {
                 
             }else if (self.shareType == FCXShareTypeMusic) {
-                shareContent = [NSString stringWithFormat:@"我发现了一首好听的铃声《%@》，大家快来听一听！（分享自：【铃声大全%@】）。点击试听：", self.shareTitle, self.shareURL];
+                shareContent = [NSString stringWithFormat:@"%@", self.shareTitle, self.shareURL];
             }
 
         }
@@ -454,15 +487,16 @@
         case 105:
         {//短信
             shareType = UMShareToSms;
-            shareImage = nil;
 
             if (self.shareType == FCXShareTypeDefault) {
+                shareImage = nil;
                 shareContent = [shareContent stringByAppendingString:self.shareURL];
 
             }else if (self.shareType == FCXShareTypeImage) {
                 
             }else if (self.shareType == FCXShareTypeMusic) {
-                shareContent = [NSString stringWithFormat:@"我发现了一首好听的铃声《%@》来自【铃声大全】，大家快来下载应用试听吧！%@", self.shareTitle, self.shareURL];
+                shareImage = nil;
+                shareContent = [shareContent stringByAppendingString:self.shareURL];
             }
         }
             break;
@@ -483,14 +517,12 @@
     return self.shareContent;
 }
 
--(void)didCloseUIViewController:(UMSViewControllerType)fromViewControllerType
-{
+- (void)didCloseUIViewController:(UMSViewControllerType)fromViewControllerType {
     DBLOG(@"didClose is %d",fromViewControllerType);
 }
 
 //下面得到分享完成的回调
--(void)didFinishGetUMSocialDataInViewController:(UMSocialResponseEntity *)response
-{
+- (void)didFinishGetUMSocialDataInViewController:(UMSocialResponseEntity *)response {
     DBLOG(@"didFinishGetUMSocialDataInViewController with response is %@",response);
     //根据`responseCode`得到发送结果,如果分享成功
     if(response.responseCode == UMSResponseCodeSuccess)
