@@ -10,6 +10,5 @@
 
 @interface FCXDiscoverViewController : UIViewController
 
-@property (nonatomic, copy) NSString *admobID;
 
 @end

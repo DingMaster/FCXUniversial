@@ -11,7 +11,6 @@
 @interface FCXWebViewController : UIViewController
 
 @property (nonatomic, copy) NSString *urlString;
-@property (nonatomic, copy) NSString *admobID;
 
 
 @end

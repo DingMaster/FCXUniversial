@@ -54,7 +54,6 @@
         FCXWebViewController *webView = [[FCXWebViewController alloc] init];
         webView.hidesBottomBarWhenPushed = YES;
         webView.urlString = url;
-        webView.admobID = self.controller.admobID;
         webView.title = self.data[@"title"];
         [self.controller.navigationController pushViewController:webView animated:YES];
     }else {
@@ -82,11 +81,12 @@
     CGFloat adHeight = 0;
     if ([[FCXOnlineConfig fcxGetConfigParams:@"showAdmob" defaultValue:@"1"] boolValue]) {
         adHeight = 50;
-        [self showAdmobBanner:CGRectMake(0, SCREEN_HEIGHT - 64 - 50, SCREEN_WIDTH, 50) adUnitID:[FCXOnlineConfig fcxGetConfigParams:@"AdmobID" defaultValue:self.admobID]];
+        [self showAdmobBanner:CGRectMake(0, SCREEN_HEIGHT - 64 - 50, SCREEN_WIDTH, 50) adUnitID:[FCXOnlineConfig fcxGetConfigParams:@"AdmobID" defaultValue:ADMOBID]];
     }
     
     NSArray *array = [FCXOnlineConfig fcxGetJSONConfigParams:@"discover_native"];
     if ([array isKindOfClass:[NSArray class]]) {
+        
         UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 64 - adHeight)];
         [self.view addSubview:scrollView];
         NSInteger row;
