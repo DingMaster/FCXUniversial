@@ -1,5 +1,5 @@
 //
-//  FCXRating.m
+//  FCXRating.h
 //  Universial
 //
 //  Created by 冯 传祥 on 15/8/23.
@@ -9,19 +9,18 @@
 #import "FCXRating.h"
 #import "FCXGuide.h"
 #import "UMFeedback.h"
-
+#import "FCXOnlineConfig.h"
+#import "MobClick.h"
 
 #define HASRATING @"HasRating"
 
 @implementation FCXRating
 
-+ (void)startRating {
-    
-    [[FCXRating sharedRating] fcx_startRating];
++ (void)startRating:(NSString *)appID {
+    [[FCXRating sharedRating] fcx_startRating:appID];
 }
 
 + (FCXRating *)sharedRating {
-    
     static FCXRating *rating;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -30,9 +29,9 @@
     return rating;
 }
 
-- (void)fcx_startRating {
+- (void)fcx_startRating:(NSString *)appID {
     
-    BOOL showRating = [[UMOnlineConfig fcxGetConfigParams:@"showRating" defaultValue:@"0"] boolValue];
+    BOOL showRating = [[FCXOnlineConfig fcxGetConfigParams:@"showRating" defaultValue:@"0"] boolValue];
     if (!showRating) {
         return;
     }
@@ -42,9 +41,10 @@
         return;
     }
     
-    //    NSString *paramsString = @"{\"标题\" : \"铃声\", \"内容\" : \"导流测试\", \"按钮1\" : \"赏个好评\", \"按钮2\" : \"我要吐槽\", \"按钮3\" : \"残忍的拒绝\"}";
-    NSString *paramsString = [UMOnlineConfig fcxGetConfigParams:@"ratingContent" defaultValue:@""];
-    NSDictionary *paramsDict = [NSJSONSerialization JSONObjectWithData:[paramsString dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableLeaves error:nil];
+    NSDictionary *paramsDict = [FCXOnlineConfig fcxGetJSONConfigParams:@"ratingContent"];
+    if (![paramsDict isKindOfClass:[NSDictionary class]]) {
+        return;
+    }
     //    NSLog(@"==%@", paramsDict);
     NSString *title = [paramsDict objectForKey:@"标题"];
     NSString *content = [paramsDict objectForKey:@"内容"];
@@ -73,7 +73,6 @@
     [alertView show];
     
     alertView.handleAction = ^(MAlertViw *alertView, NSInteger buttonIndex){
-        //        [FCXRating saveRating];
         
         if (buttonIndex == 0) {
             
@@ -86,16 +85,8 @@
             
         }else if(buttonIndex == 1) {
             
-            NSString *strUrl =[NSString stringWithFormat: @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%@", APPID];
-            if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:strUrl]]) {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:strUrl]];
-            }else{
-                strUrl =[NSString stringWithFormat: @"https://itunes.apple.com/app/id%@", APPID];
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:strUrl]];
-            }
-            
+            [FCXRating goRating:appID];
             [FCXRating saveRating];
-            
         }else {
             //            [FCXRating saveRating];
         }
@@ -103,6 +94,7 @@
     
     [self saveAlert];
 }
+
 
 //保存提醒的日期和次数
 - (void)saveAlert {
@@ -163,23 +155,36 @@
     [[NSUserDefaults standardUserDefaults]synchronize];
 }
 
-+ (void)gotoITunesApplicationPage:(NSString*)strAppID {
-    // 应用内打开
-    if (![strAppID isKindOfClass:[NSString class]] && strAppID.length > 0) {
++ (void)goAppStore:(NSString*)appID {
+    if (![appID isKindOfClass:[NSString class]]) {
         return;
     }
+    // 打开应用内购买
     SKStoreProductViewController *vc = [[SKStoreProductViewController alloc] init];
     
     vc.delegate = [FCXRating sharedRating];
-    NSDictionary *dict = [NSDictionary dictionaryWithObject:strAppID forKey:SKStoreProductParameterITunesItemIdentifier];
+    NSDictionary *dict = [NSDictionary dictionaryWithObject:appID forKey:SKStoreProductParameterITunesItemIdentifier];
     [vc loadProductWithParameters:dict completionBlock:nil];
     
     [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:vc animated:YES completion:nil];
-    
 }
 
 - (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController {
     [viewController dismissViewControllerAnimated:YES completion:nil];
+}
+
++ (void)goRating:(NSString *)appID {
+    if (![appID isKindOfClass:[NSString class]]) {
+        return;
+    }
+    
+    NSString *strUrl =[NSString stringWithFormat: @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%@", appID];
+    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:strUrl]]) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:strUrl]];
+    }else{
+        strUrl =[NSString stringWithFormat: @"https://itunes.apple.com/app/id%@", appID];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:strUrl]];
+    }
 }
 
 @end
