@@ -16,21 +16,17 @@
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSString *versionParam = [NSString stringWithFormat:@"%@_%@", key, appVersion];
     
-//    NSString *result = [UMOnlineConfig getConfigParams:versionParam];
-//    DBLOG(@"version===%@", result);
-//    
-//    if (result == nil) {
-//        
-//        result = [UMOnlineConfig getConfigParams:key];
-//        DBLOG(@"origin===%@", result);
-//        
-//        if (result == nil && defaultValue != nil) {
-//            result = defaultValue;
-//        }
-//    }
-//    
-//    return result;
-    return nil;
+    NSString *result = [UMOnlineConfig getConfigParams:versionParam];
+    
+    if (result == nil) {
+        
+        result = [UMOnlineConfig getConfigParams:key];
+        if (result == nil && defaultValue != nil) {
+            result = defaultValue;
+        }
+    }
+    
+    return result;
 }
 
 + (NSString *)fcxGetConfigParams:(NSString *)key {
