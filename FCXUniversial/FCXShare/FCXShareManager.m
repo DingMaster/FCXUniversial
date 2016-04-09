@@ -190,7 +190,7 @@
     [button setTitleColor:SHARE_TITLE_NORMALCOLOR forState:UIControlStateNormal];
     [button setTitleColor:SHARE_TITLE_HCOLOR forState:UIControlStateHighlighted];
     button.titleLabel.textAlignment = NSTextAlignmentCenter;
-    button.titleLabel.font = [UIFont systemFontOfSize:12];
+    button.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:12];
     button.exclusiveTouch = YES;
     [_bottomView addSubview:button];
     return button;
