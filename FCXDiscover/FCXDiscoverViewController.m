@@ -109,7 +109,7 @@
             btn.frame = CGRectMake((idx%4) * (width + space), (idx/4) * (width + space), width, width);
             btn.backgroundColor = [UIColor clearColor];
             [btn setTitleColor:UICOLOR_FROMRGB(0x343233) forState:UIControlStateNormal];
-            btn.titleLabel.font = [UIFont systemFontOfSize:15];
+            btn.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:13.5];
             btn.titleEdgeInsets = UIEdgeInsetsMake((width - IMAGE_WIDTH)/2 + 20, 0, 0, 0);
             btn.data = obj;
             [scrollView addSubview:btn];
