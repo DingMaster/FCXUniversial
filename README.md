@@ -139,6 +139,7 @@ NSString *placementId = @"4050412012239592";
     [UMSocialQQHandler setSupportWebView:YES];
 }
 ```
+配置plist文件里面URL schemes和白名单LSApplicationQueriesSchemes，具体可参考友盟.
 
 ###分享功能
 
