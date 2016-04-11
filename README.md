@@ -13,19 +13,20 @@ FCXDefine里面写了一些常用的宏定义，FCXCategory文件夹有常用的
 
 ##引导、好评功能
 * 1.引导.
-**  引导工功能包含在开屏广告里，不需要写.
+    **  引导工功能包含在开屏广告里，不需要写.
 
 * 2.好评.
-  包含头文件
+    **  包含头文件
 ```objc
 #import "FCXOnlineConfig.h"
-
+```
+```objc
 调用函数[FCXRating startRating:APPID];（APPID是当前应用的AppID）.
 ```
 
 
 ##在线参数
-*导入UMOnlineConfig整个文件夹即可（如果报错导入libz库）,包含头文件FCXOnlineConfig.h即可（不需要包含FCXOnlineConfig+Implementation.h），调用时用FCXOnlineConfig这个类调用.
+导入UMOnlineConfig整个文件夹即可（如果报错导入libz库）,包含头文件FCXOnlineConfig.h即可（不需要包含FCXOnlineConfig+Implementation.h），调用时用FCXOnlineConfig这个类调用.
 *包含头文件
 ```objc
 #import "FCXOnlineConfig.h"
@@ -43,14 +44,13 @@ FCXDefine里面写了一些常用的宏定义，FCXCategory文件夹有常用的
 
 
 ##Admob广告
-* 包含头文件:
+包含头文件:
 ```objc
 #import "UIViewController+Advert.h"
 ```
-* 调用函数:
+调用函数:
 ```objc
 - (void)showAdmobBanner:(CGRect)frame adUnitID:(NSString *)adUnitID;
-
 - (void)showAdmobBanner:(CGRect)frame
 adUnitID:(NSString *)adUnitID
 superView:(UIView *)superView;
@@ -58,7 +58,7 @@ superView:(UIView *)superView;
 
 
 ##开屏广告
-* 导入AppDelegate+GS.h、AppDelegate+GS.m文件，然后在setupS函数修改里面两个地方：
+导入AppDelegate+GS.h、AppDelegate+GS.m文件，然后在setupS函数修改里面两个地方：
 * 1.修改时间（这个时间每次提交AppStore都要修改，时间修改为审核提交日往后退15天），这里的时间是为了用户第一次下载启动时获取不了友盟参数，这时默认不显示开屏广告，为了收益在获取不到参数时显示开屏.
 ```objc
 showSplash = ([currentDateString compare:@"2016-04-26"] == NSOrderedDescending);
@@ -71,17 +71,17 @@ NSString *placementId = @"4050412012239592";
 ```
 
 ##发现
-* 包含头文件
+包含头文件
 ```objc
 #import "FCXDiscoverViewController.h"
 ```
-* 发现页面使用FCXDiscoverViewController这个类，这个页面需要显示admob的广告，为了和pod集成，增加了一个admobID属性，用来给默认的admobID，需要给它赋值.
+发现页面使用FCXDiscoverViewController这个类，这个页面需要显示admob的广告，为了和pod集成，增加了一个admobID属性，用来给默认的admobID，需要给它赋值.
 
 
 ##分享
 
 ###配置信息
-* 在AppDelegate.m里包含头文件
+在AppDelegate.m里包含头文件
 ```objc
 #import "UMSocialData.h"
 #import "UMSocialQQHandler.h"
@@ -94,7 +94,7 @@ NSString *placementId = @"4050412012239592";
 #import "UMOnlineConfig.h"
 ```
 
-* 调用配置函数，里面配置相应key的信息：
+调用配置函数，里面配置相应key的信息：
 ```objc
 - (void)setupUmeng {
     NSString *appId = @"1097760130";//当前应用的appId
@@ -139,9 +139,9 @@ NSString *placementId = @"4050412012239592";
 ```
 
 ###分享功能
-* 目前支持通用的图文分享、音乐分享、图片分享和单个平台分享.
+目前支持通用的图文分享、音乐分享、图片分享和单个平台分享.
+包含头文件
 ```objc
-* 包含头文件
 #import "FCXShareManager.h"
 ```
 ####图文分享
