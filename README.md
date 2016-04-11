@@ -12,10 +12,10 @@ pod 'FCXUniversial', :git => 'https://github.com/FCXPods/FCXUniversial.git'
 FCXDefine里面写了一些常用的宏定义，FCXCategory文件夹有常用的Category.
 
 ##引导、好评功能
-* 1.引导
+* 1.引导.
   引导工功能包含在开屏广告里，不需要写.
 
-* 2.好评
+* 2.好评.
   包含头文件
 ```objc
 #import "FCXOnlineConfig.h"
