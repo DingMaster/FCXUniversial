@@ -1,5 +1,5 @@
 # FCXUniversial
-里面现在集成引导、好评、广告S、发现、分享等功能；
+里面现在集成在线参数、引导、好评、广告、发现、分享功能.
 
 ##使用Pod
 使用时在Podfile里面写上：
@@ -11,23 +11,9 @@ pod 'FCXUniversial', :git => 'https://github.com/FCXPods/FCXUniversial.git'
 ##宏定义及常用Category
 FCXDefine里面写了一些常用的宏定义，FCXCategory文件夹有常用的Category.
 
-##引导、好评功能
-* 1.引导
-
-引导功能包含在开屏广告里，不需要写.
-* 2.好评
-
-包含头文件
-```objc
-#import "FCXOnlineConfig.h"
-```
-```objc
-调用函数[FCXRating startRating:APPID];（APPID是当前应用的AppID）.
-```
-
 
 ##在线参数
-导入UMOnlineConfig整个文件夹即可（如果报错导入libz库）,包含头文件FCXOnlineConfig.h即可（不需要包含FCXOnlineConfig+Implementation.h），调用时用FCXOnlineConfig这个类调用.
+在线参数没有集成到Pod里面，需要下载并手动导入UMOnlineConfig整个文件夹（如果报错导入libz库）,包含头文件FCXOnlineConfig.h即可（不需要包含FCXOnlineConfig+Implementation.h），调用时用FCXOnlineConfig这个类调用.
 
 包含头文件
 ```objc
@@ -42,6 +28,22 @@ FCXDefine里面写了一些常用的宏定义，FCXCategory文件夹有常用的
 * 2.调用JSON格式参数.
 ```objc
 + (id)fcxGetJSONConfigParams:(NSString *)key;
+```
+
+
+
+##引导、好评功能
+* 1.引导
+
+引导功能包含在开屏广告里，不需要写.
+* 2.好评
+
+包含头文件
+```objc
+#import "FCXOnlineConfig.h"
+```
+```objc
+调用函数[FCXRating startRating:APPID];（APPID是当前应用的AppID）.
 ```
 
 
