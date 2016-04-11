@@ -13,7 +13,7 @@ FCXDefine里面写了一些常用的宏定义，FCXCategory文件夹有常用的
 
 
 ##在线参数
-在线参数没有集成到Pod里面，需要下载并手动导入UMOnlineConfig整个文件夹（如果报错导入libz库）,包含头文件FCXOnlineConfig.h即可（不需要包含FCXOnlineConfig+Implementation.h），调用时用FCXOnlineConfig这个类调用.
+在线参数没有集成到Pod里面，需要手动下载并导入UMOnlineConfig整个文件夹（`FCXOnlineConfig+Implementation`这个类一定要导入，如果报错导入libz库）.
 
 包含头文件
 ```objc
