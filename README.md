@@ -12,10 +12,10 @@ pod 'FCXUniversial', :git => 'https://github.com/FCXPods/FCXUniversial.git'
 FCXDefine里面写了一些常用的宏定义，FCXCategory文件夹有常用的Category.
 
 ##引导、好评功能
-*1.引导.
+* 1.引导.
 
 引导功能包含在开屏广告里，不需要写.
-*2.好评.
+* 2.好评.
 
 包含头文件
 ```objc
@@ -33,13 +33,13 @@ FCXDefine里面写了一些常用的宏定义，FCXCategory文件夹有常用的
 ```objc
 #import "FCXOnlineConfig.h"
 ```
-*1.调用一般参数.
+* 1.调用一般参数.
 ```objc
 + (NSString *)fcxGetConfigParams:(NSString *)key;
 + (NSString *)fcxGetConfigParams:(NSString *)key defaultValue:(NSString*)defaultValue;
 ```
 
-*2.调用JSON格式参数.
+* 2.调用JSON格式参数.
 ```objc
 + (id)fcxGetJSONConfigParams:(NSString *)key;
 ```
@@ -61,12 +61,12 @@ superView:(UIView *)superView;
 
 ##开屏广告
 导入AppDelegate+GS.h、AppDelegate+GS.m文件，然后在setupS函数修改里面两个地方：
-*1.修改时间（这个时间每次提交AppStore都要修改，时间修改为审核提交日往后退15天），这里的时间是为了用户第一次下载启动时获取不了友盟参数，这时默认不显示开屏广告，为了收益在获取不到参数时显示开屏.
+* 1.修改时间（这个时间每次提交AppStore都要修改，时间修改为审核提交日往后退15天），这里的时间是为了用户第一次下载启动时获取不了友盟参数，这时默认不显示开屏广告，为了收益在获取不到参数时显示开屏.
 ```objc
 showSplash = ([currentDateString compare:@"2016-04-26"] == NSOrderedDescending);
 
 ```
-*2.这是默认相应的appKey、placementId.
+* 2.这是默认相应的appKey、placementId.
 ```objc
 NSString *appKey = @"1105304662";
 NSString *placementId = @"4050412012239592";
