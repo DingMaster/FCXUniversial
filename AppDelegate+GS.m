@@ -9,7 +9,7 @@
 #import "AppDelegate+GS.h"
 #import <objc/runtime.h>
 #import "FCXGuide.h"
-
+#import "FCXOnlineConfig.h"
 
 @implementation AppDelegate (GS)
 
@@ -57,16 +57,16 @@
         [dateFormatter setDateFormat: @"yyyy-MM-dd"];
         NSString *currentDateString = [dateFormatter stringFromDate:currentDate];
         
-        showSplash = ([currentDateString compare:@"2016-04-01"] == NSOrderedDescending);
+        showSplash = ([currentDateString compare:@"2016-04-26"] == NSOrderedDescending);
     }
-    showSplash = YES;
+    
     if (!showSplash) {
         [FCXGuide startGuide];
         return;
     }
-    return;
-    NSString *appKey = @"1105186430";
-    NSString *placementId = @"2060408926246021";
+    
+    NSString *appKey = @"1105304662";
+    NSString *placementId = @"4050412012239592";
     
     NSString *paramsString = [FCXOnlineConfig fcxGetConfigParams:@"GDT_SplashInfo" defaultValue:@""];
     NSDictionary *dict  = [NSJSONSerialization JSONObjectWithData:[paramsString dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableLeaves error:nil];
@@ -83,7 +83,7 @@
     self.customSplashView.userInteractionEnabled = YES;
     
     //针对不同设备尺寸设置不同的默认图片，拉取广告等待时间会展示该默认图片。
-    CGSize winSize = self.window.size;
+    CGSize winSize = self.window.frame.size;
     NSArray* imagesDict = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"UILaunchImages"];
     for (NSDictionary* dict in imagesDict) {
         if(CGSizeEqualToSize(CGSizeFromString(dict[@"UILaunchImageSize"]),winSize))
@@ -95,44 +95,45 @@
     }
     
     [self.window.rootViewController.view addSubview:self.customSplashView];
-
+    
     //设置开屏拉取时长限制，若超时则不再展示广告
     self.splash.fetchDelay = 3;
     //拉取并展示
     [self.splash loadAdAndShowInWindow:self.window];
-
+    
 }
 
 -(void)splashAdSuccessPresentScreen:(GDTSplashAd *)splashAd
 {
-    DBLOG(@"%s",__FUNCTION__);
+    //    DBLog(@"%s",__FUNCTION__);
 }
 
 -(void)splashAdFailToPresent:(GDTSplashAd *)splashAd withError:(NSError *)error
 {
-    DBLOG(@"%s%@",__FUNCTION__,error);
+    //    DBLog(@"%s%@",__FUNCTION__,error);
     [self clearSplashData];
-
+    
 }
 
 -(void)splashAdClicked:(GDTSplashAd *)splashAd
 {
-    DBLOG(@"%s",__FUNCTION__);
+    //    DBLog(@"%s",__FUNCTION__);
 }
 
 -(void)splashAdApplicationWillEnterBackground:(GDTSplashAd *)splashAd
 {
-    DBLOG(@"%s",__FUNCTION__);
+    //    DBLog(@"%s",__FUNCTION__);
 }
 
 -(void)splashAdClosed:(GDTSplashAd *)splashAd
 {
-    DBLOG(@"%s",__FUNCTION__);
+    //    DBLog(@"%s",__FUNCTION__);
     [self clearSplashData];
+    
 }
 
 - (void)splashAdDidDismissFullScreenModal:(GDTSplashAd *)splashAd {
-    DBLOG(@"%s",__FUNCTION__);
+    //    DBLog(@"%s",__FUNCTION__);
     [self clearSplashData];
 }
 
