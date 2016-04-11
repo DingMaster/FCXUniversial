@@ -13,10 +13,10 @@ FCXDefine里面写了一些常用的宏定义，FCXCategory文件夹有常用的
 
 ##引导、好评功能
 * 1.引导.
-    **  引导工功能包含在开屏广告里，不需要写.
+引导工功能包含在开屏广告里，不需要写.
 
 * 2.好评.
-    **  包含头文件
+包含头文件
 ```objc
 #import "FCXOnlineConfig.h"
 ```
@@ -27,7 +27,7 @@ FCXDefine里面写了一些常用的宏定义，FCXCategory文件夹有常用的
 
 ##在线参数
 导入UMOnlineConfig整个文件夹即可（如果报错导入libz库）,包含头文件FCXOnlineConfig.h即可（不需要包含FCXOnlineConfig+Implementation.h），调用时用FCXOnlineConfig这个类调用.
-*包含头文件
+包含头文件
 ```objc
 #import "FCXOnlineConfig.h"
 ```
