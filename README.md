@@ -1,7 +1,7 @@
 # FCXUniversial
+里面现在集成引导、好评、广告S、发现、分享等功能；
 
 ##使用Pod
-Pod里面现在集成广告SDK、发现页面、引导、好评、分享等功能；
 使用时在Podfile里面写上：
 ```objc
 pod 'FCXUniversial', :git => 'https://github.com/FCXPods/FCXUniversial.git'
