@@ -83,6 +83,8 @@ NSString *placementId = @"4050412012239592";
 ##分享
 
 ###配置信息
+配置plist文件里面URL schemes和白名单LSApplicationQueriesSchemes，具体可参考友盟.
+
 在AppDelegate.m里包含头文件
 ```objc
 #import "UMSocialData.h"
@@ -139,7 +141,7 @@ NSString *placementId = @"4050412012239592";
     [UMSocialQQHandler setSupportWebView:YES];
 }
 ```
-配置plist文件里面URL schemes和白名单LSApplicationQueriesSchemes，具体可参考友盟.
+
 
 ###分享功能
 
