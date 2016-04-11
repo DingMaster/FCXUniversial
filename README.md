@@ -12,10 +12,10 @@ pod 'FCXUniversial', :git => 'https://github.com/FCXPods/FCXUniversial.git'
 FCXDefine里面写了一些常用的宏定义，FCXCategory文件夹有常用的Category.
 
 ##引导、好评功能
-* 1.引导.
+* 1.引导
 
 引导功能包含在开屏广告里，不需要写.
-* 2.好评.
+* 2.好评
 
 包含头文件
 ```objc
@@ -54,8 +54,8 @@ FCXDefine里面写了一些常用的宏定义，FCXCategory文件夹有常用的
 ```objc
 - (void)showAdmobBanner:(CGRect)frame adUnitID:(NSString *)adUnitID;
 - (void)showAdmobBanner:(CGRect)frame
-adUnitID:(NSString *)adUnitID
-superView:(UIView *)superView;
+               adUnitID:(NSString *)adUnitID
+              superView:(UIView *)superView;
 ```
 
 
@@ -66,7 +66,7 @@ superView:(UIView *)superView;
 showSplash = ([currentDateString compare:@"2016-04-26"] == NSOrderedDescending);
 
 ```
-* 2.这是默认相应的appKey、placementId.
+* 2.修改相应的appKey、placementId.
 ```objc
 NSString *appKey = @"1105304662";
 NSString *placementId = @"4050412012239592";
