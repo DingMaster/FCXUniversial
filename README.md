@@ -6,7 +6,7 @@
 ```objc
 pod 'FCXUniversial', :git => 'https://github.com/FCXPods/FCXUniversial.git'
 ```
-注意：一定要先手动导入`FCXOnlineConfig+Implementation`这个类到工程中，否则请求不到友盟参数（友盟在线参数不能集成在Pod里面，只能用一个不太好的方法解决）
+注意：一定要先手动导入`FCXOnlineConfig+Implementation`（在UMOnlineConfig文件夹下）这个类到工程中，否则请求不到友盟参数（友盟在线参数不能集成在Pod里面，只能用一个不太好的方法解决）
 
 ##宏定义及常用Category
 FCXDefine里面写了一些常用的宏定义，FCXCategory文件夹有常用的Category.
