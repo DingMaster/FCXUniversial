@@ -80,9 +80,14 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
     CGFloat adHeight = 0;
+    CGFloat tabBarHeight = 0;
+    if (self.tabBarController) {
+        tabBarHeight = 49;
+    }
+
     if ([[FCXOnlineConfig fcxGetConfigParams:@"showAdmob" defaultValue:@"1"] boolValue]) {
         adHeight = 50;
-        [self showAdmobBanner:CGRectMake(0, SCREEN_HEIGHT - 64 - 50, SCREEN_WIDTH, 50) adUnitID:[FCXOnlineConfig fcxGetConfigParams:@"AdmobID" defaultValue:self.admobID]];
+        [self showAdmobBanner:CGRectMake(0, SCREEN_HEIGHT - 64 - 50 - tabBarHeight, SCREEN_WIDTH, 50) adUnitID:[FCXOnlineConfig fcxGetConfigParams:@"AdmobID" defaultValue:self.admobID]];
     }
     
     NSArray *array = [FCXOnlineConfig fcxGetJSONConfigParams:@"discover_native"];
