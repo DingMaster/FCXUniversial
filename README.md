@@ -75,6 +75,8 @@ NSString *placementId = @"4050412012239592";
 ```
 
 ##发现
+一定要导入`FCXOnlineConfig+Implementation`这个类否则请求不到友盟参数（友盟在线参数不能继承在Pod里面，只能用一个不太好的方法解决）
+
 包含头文件
 ```objc
 #import "FCXDiscoverViewController.h"
