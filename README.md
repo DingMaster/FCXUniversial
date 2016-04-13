@@ -223,6 +223,14 @@ NSString *placementId = @"4050412012239592";
 @property (nonatomic, unsafe_unretained) BOOL showBottom;
 @property (nonatomic, copy) NSString *bottomLeftString;
 @property (nonatomic, copy) NSString *bottomRightString;
+
+Example:
+    FCXAboutController *about = [[FCXAboutController alloc] init];
+    about.imageName = @"about_icon";
+    about.showBottom = YES;
+    about.midString = @"鲨鱼相机让你变身摄影达人";
+    about.bottomRightString = @"杨磊\n张丹丹\n冯传祥";
+    [self.navigationController pushViewController:about animated:YES];
 ```
 界面样式：
 
