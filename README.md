@@ -213,7 +213,7 @@ NSString *placementId = @"4050412012239592";
 ##关于
 包含头文件:
 ```objc
-#import "UIViewController+Advert.h"
+#import "FCXAboutController.h"
 ```
 设置数（详情可点击头文件查看注释）:
 ```objc
