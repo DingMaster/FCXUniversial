@@ -149,13 +149,13 @@ NSString *placementId = @"4050412012239592";
 
 ###分享功能
 
-目前支持通用的图文分享、音乐分享、图片分享和单个平台分享.
+目前支持通用的图文分享（邀请好友）、音乐分享、图片分享和单个平台分享.
 
 包含头文件
 ```objc
 #import "FCXShareManager.h"
 ```
-####图文分享
+####图文分享（邀请好友）
 ```objc
     FCXShareManager *shareManager = [FCXShareManager sharedManager];
     shareManager.presentedController = self;
@@ -208,4 +208,22 @@ NSString *placementId = @"4050412012239592";
     //分享的平台（可查看头文件）
     [shareManager shareToPlatform:FCXSharePlatformWXSession];
 ```
+
+
+##关于
+包含头文件:
+```objc
+#import "UIViewController+Advert.h"
+```
+设置数（详情可点击头文件查看注释）:
+```objc
+@property (nonatomic, copy) NSString *imageName;
+@property (nonatomic, copy) NSString *appName;
+@property (nonatomic, copy) NSString *midString;
+@property (nonatomic, unsafe_unretained) BOOL showBottom;
+@property (nonatomic, copy) NSString *bottomLeftString;
+@property (nonatomic, copy) NSString *bottomRightString;
+```
+界面样式：
+![](about@2x.png)
 
