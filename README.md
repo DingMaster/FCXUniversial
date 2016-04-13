@@ -225,5 +225,6 @@ NSString *placementId = @"4050412012239592";
 @property (nonatomic, copy) NSString *bottomRightString;
 ```
 界面样式：
+
 ![](about@2x.png)
 
