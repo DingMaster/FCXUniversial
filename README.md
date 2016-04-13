@@ -6,7 +6,7 @@
 ```objc
 pod 'FCXUniversial', :git => 'https://github.com/FCXPods/FCXUniversial.git'
 ```
-
+注意：一定要导入`FCXOnlineConfig+Implementation`这个类否则请求不到友盟参数（友盟在线参数不能继承在Pod里面，只能用一个不太好的方法解决）
 
 ##宏定义及常用Category
 FCXDefine里面写了一些常用的宏定义，FCXCategory文件夹有常用的Category.
