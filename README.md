@@ -226,6 +226,8 @@ NSString *placementId = @"4050412012239592";
 
 Example:
     FCXAboutController *about = [[FCXAboutController alloc] init];
+    //标题可不写，默认是关于+CFBundleDisplayName
+    about.title = @"关于鲨鱼相机";
     about.imageName = @"about_icon";
     about.showBottom = YES;
     about.midString = @"鲨鱼相机让你变身摄影达人";

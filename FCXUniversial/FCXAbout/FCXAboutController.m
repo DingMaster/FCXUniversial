@@ -20,6 +20,9 @@
 
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.view.backgroundColor = UICOLOR_FROMRGB(0xf5f5f5);
+    if (!self.title) {
+        self.title = [NSString stringWithFormat:@"关于%@", APP_DISPLAYNAME];
+    }
     
     CGFloat statusBarHeight = 20;
     if ([UIApplication sharedApplication].statusBarHidden) {
