@@ -93,7 +93,7 @@
     NSArray *array = [FCXOnlineConfig fcxGetJSONConfigParams:@"discover_native"];
     if ([array isKindOfClass:[NSArray class]]) {
         
-        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 64 - adHeight)];
+        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 64 - adHeight - tabBarHeight)];
         [self.view addSubview:scrollView];
         NSInteger row;
         if (array.count %4 == 0) {
