@@ -182,7 +182,7 @@
     [button setTitle:title forState:UIControlStateNormal];
     [button setImage:[UIImage imageNamed:normalImage] forState:UIControlStateNormal];
     [button setImage:[UIImage imageNamed:highlightedImage] forState:UIControlStateHighlighted];
-    [button addTarget:self action:@selector(shareAction:) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(shareButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     button.titleEdgeInsets = UIEdgeInsetsMake(80, -65, 0, 0);
     if ([UIDevice currentDevice].systemVersion.floatValue < 7.0) {
         button.titleEdgeInsets = UIEdgeInsetsMake(80, -56, 0, 0);
