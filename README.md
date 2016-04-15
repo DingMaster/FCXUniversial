@@ -145,8 +145,7 @@ NSString *placementId = @"4050412012239592";
 ```
 在AppDelegate文件里面实现下面的系统回调方法
 ```objc
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
-{
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     BOOL result = [UMSocialSnsService handleOpenURL:url wxApiDelegate:nil];
     if (result == FALSE) {
     //调用其他SDK，例如新浪微博SDK等
@@ -158,8 +157,7 @@ NSString *placementId = @"4050412012239592";
 - (BOOL)application:(UIApplication *)application
 openURL:(NSURL *)url
 sourceApplication:(NSString *)sourceApplication
-annotation:(id)annotation
-{
+annotation:(id)annotation {
     BOOL result = [UMSocialSnsService handleOpenURL:url wxApiDelegate:nil];
     //    NSLog(@"url %@  bool%d", url.absoluteString, result);
 
