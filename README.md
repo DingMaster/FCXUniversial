@@ -167,6 +167,14 @@ annotation:(id)annotation {
     }
     return result;
 }
+
+/**
+这里处理新浪微博SSO授权进入新浪微博客户端后进入后台，再返回原来应用
+*/
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    [UMSocialSnsService  applicationDidBecomeActive];
+}
+
 ```
 
 ###分享功能
