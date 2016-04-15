@@ -159,8 +159,6 @@ openURL:(NSURL *)url
 sourceApplication:(NSString *)sourceApplication
 annotation:(id)annotation {
     BOOL result = [UMSocialSnsService handleOpenURL:url wxApiDelegate:nil];
-    //    NSLog(@"url %@  bool%d", url.absoluteString, result);
-
     if (result == FALSE) {
     //调用其他SDK，例如新浪微博SDK等
 
