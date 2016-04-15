@@ -95,7 +95,7 @@
                 if ([WXApi isWXAppInstalled]) {
                     i++;
                     shareButton = [self createShareButtonWithFrame:buttonFrame
-                                                               tag:100+j
+                                                               tag:FCXSharePlatformWXSession
                                                              title:@"微信"
                                                        normalImage:@"share_wx"
                                                   highlightedImage:@"share_wx_h"];
@@ -107,7 +107,7 @@
                 if ([WXApi isWXAppInstalled]) {
                     i++;
                     shareButton = [self createShareButtonWithFrame:buttonFrame
-                                                               tag:100+j
+                                                               tag:FCXSharePlatformWXTimeline
                                                              title:@"微信朋友圈"
                                                        normalImage:@"share_wxfc"
                                                   highlightedImage:@"share_wxfc_h"];
@@ -119,7 +119,7 @@
                 if ([QQApiInterface isQQInstalled]) {
                     i++;
                     shareButton = [self createShareButtonWithFrame:buttonFrame
-                                                               tag:100+j
+                                                               tag:FCXSharePlatformQQ
                                                              title:@"QQ"
                                                        normalImage:@"share_qq"
                                                   highlightedImage:@"share_qq_h"];
@@ -131,7 +131,7 @@
                 if ([QQApiInterface isQQInstalled]) {
                     i++;
                     shareButton = [self createShareButtonWithFrame:buttonFrame
-                                                               tag:100+j
+                                                               tag:FCXSharePlatformQzone
                                                              title:@"QQ空间"
                                                        normalImage:@"share_qqzone"
                                                   highlightedImage:@"share_qqzone_h"];
@@ -142,7 +142,7 @@
             {//新浪微博
                 i++;
                 shareButton = [self createShareButtonWithFrame:buttonFrame
-                                                           tag:100+j
+                                                           tag:FCXSharePlatformSina
                                                          title:@"新浪微博"
                                                    normalImage:@"share_sina"
                                               highlightedImage:@"share_sina_h"];
@@ -153,7 +153,7 @@
                 if([MFMessageComposeViewController canSendText]) {
                     i++;
                     shareButton = [self createShareButtonWithFrame:buttonFrame
-                                                               tag:100+j
+                                                               tag:FCXSharePlatformSms
                                                              title:@"短信"
                                                        normalImage:@"share_sms"
                                                   highlightedImage:@"share_sms_h"];
