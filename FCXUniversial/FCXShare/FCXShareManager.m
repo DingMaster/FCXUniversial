@@ -342,24 +342,23 @@
     [self shareToPlatform:FCXSharePlatformSms];
 }
 
-- (void)shareToPlatform:(FCXSharePlatform)platform {
-    UIButton *button = (UIButton *)[_bottomView viewWithTag:platform];
-    [self shareAction:button];
+#pragma mark - 分享
+- (void)shareButtonAction:(UIButton *)button {
+    [self dismissView];
+    [self shareToPlatform:button.tag];
 }
 
-#pragma mark - 分享
-- (void)shareAction:(UIButton *)button {
-    [self dismissView];
+- (void)shareToPlatform:(FCXSharePlatform)platform {
     
     NSString *shareContent = self.shareContent;
     UIImage *shareImage = self.shareImage;
     NSString *shareType = @"";
     
-    switch (button.tag) {
-        case 100:
+    switch (platform) {
+        case FCXSharePlatformWXSession:
         {//微信
             shareType = UMShareToWechatSession;
-
+            
             if (self.shareType == FCXShareTypeDefault) {
                 
                 if (self.shareURL) {
@@ -382,10 +381,10 @@
             }
         }
             break;
-        case 101:
+        case FCXSharePlatformWXTimeline:
         {//朋友圈
             shareType = UMShareToWechatTimeline;
-
+            
             if (self.shareType == FCXShareTypeDefault) {
                 
                 if (self.shareURL) {
@@ -397,11 +396,11 @@
                 [UMSocialData defaultData].extConfig.wxMessageType = UMSocialWXMessageTypeWeb;
                 
                 shareContent = [self getShortShareContent];
-
+                
             }else if (self.shareType == FCXShareTypeImage) {
                 
                 [UMSocialData defaultData].extConfig.wxMessageType = UMSocialWXMessageTypeImage;
-
+                
             }else if (self.shareType == FCXShareTypeMusic) {
                 //音乐分享需要单独调用微信的，否则音乐url与跳转url冲突
                 [self shareMusicToWXWithType:WXSceneTimeline];
@@ -409,10 +408,10 @@
             }
         }
             break;
-        case 102:
+        case FCXSharePlatformQQ:
         {//QQ好友
             shareType = UMShareToQQ;
-
+            
             if (self.shareType == FCXShareTypeDefault) {
                 
                 if (self.shareURL) {
@@ -437,10 +436,10 @@
             }
         }
             break;
-        case 103:
+        case FCXSharePlatformQzone:
         {//QQ空间
             shareType = UMShareToQzone;
-
+            
             if (self.shareType == FCXShareTypeDefault) {
                 
                 if (self.shareURL) {
@@ -450,11 +449,11 @@
                     [UMSocialData defaultData].extConfig.qzoneData.title =  self.shareTitle;
                 }
                 shareContent = [self getShortShareContent];
-
+                
             }else if (self.shareType == FCXShareTypeImage) {//qq空间必须有内容
                 [UMSocialData defaultData].extConfig.qzoneData.url = self.shareURL;
                 [UMSocialData defaultData].extConfig.qzoneData.title = self.shareTitle;
- 
+                
             }else if (self.shareType == FCXShareTypeMusic) {
                 
                 //音乐分享需要单独调用腾讯的，否则音乐url与跳转url冲突
@@ -463,7 +462,7 @@
             }
         }
             break;
-        case 104:
+        case FCXSharePlatformSina:
         {//新浪微博
             shareType = UMShareToSina;
             if (shareContent.length > 150) {
@@ -475,23 +474,23 @@
                 if (self.shareURL) {
                     shareContent = [shareContent stringByAppendingString:self.shareURL];
                 }
-
+                
             }else if (self.shareType == FCXShareTypeImage) {
                 
             }else if (self.shareType == FCXShareTypeMusic) {
                 shareContent = [NSString stringWithFormat:@"%@", self.shareTitle, self.shareURL];
             }
-
+            
         }
             break;
-        case 105:
+        case FCXSharePlatformSms:
         {//短信
             shareType = UMShareToSms;
-
+            
             if (self.shareType == FCXShareTypeDefault) {
                 shareImage = nil;
                 shareContent = [shareContent stringByAppendingString:self.shareURL];
-
+                
             }else if (self.shareType == FCXShareTypeImage) {
                 
             }else if (self.shareType == FCXShareTypeMusic) {
