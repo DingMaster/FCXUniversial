@@ -39,7 +39,7 @@ FCXDefine里面写了一些常用的宏定义，FCXCategory文件夹有常用的
 
 包含头文件
 ```objc
-#import "FCXOnlineConfig.h"
+#import "FCXRating.h"
 ```
 ```objc
 调用函数[FCXRating startRating:APPID];（APPID是当前应用的AppID）.
@@ -143,7 +143,33 @@ NSString *placementId = @"4050412012239592";
     [UMSocialQQHandler setSupportWebView:YES];
 }
 ```
+在AppDelegate文件里面实现下面的系统回调方法
+```objc
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    BOOL result = [UMSocialSnsService handleOpenURL:url wxApiDelegate:nil];
+    if (result == FALSE) {
+    //调用其他SDK，例如新浪微博SDK等
 
+    }
+    return result;
+}
+
+- (BOOL)application:(UIApplication *)application
+openURL:(NSURL *)url
+sourceApplication:(NSString *)sourceApplication
+annotation:(id)annotation
+{
+    BOOL result = [UMSocialSnsService handleOpenURL:url wxApiDelegate:nil];
+    //    NSLog(@"url %@  bool%d", url.absoluteString, result);
+
+    if (result == FALSE) {
+    //调用其他SDK，例如新浪微博SDK等
+
+    }
+    return result;
+}
+```
 
 ###分享功能
 
