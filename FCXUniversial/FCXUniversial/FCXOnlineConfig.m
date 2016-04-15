@@ -10,9 +10,17 @@
 
 @implementation FCXOnlineConfig
 
++ (NSString *)getConfigParams:(NSString *)key {
+    NSLog(@"\n\n\n请导入UMOnlineConfig库！\n\n\n");
+    return @"";
+}
 
 + (NSString *)fcxGetConfigParams:(NSString *)key defaultValue:(NSString *)defaultValue {
-    return @"";
+    Class class = NSClassFromString(@"UMOnlineConfig");
+    if (!class) {
+        class = self;
+    }
+    return [class getConfigParams:key];
 }
 
 + (NSString *)fcxGetConfigParams:(NSString *)key {
