@@ -20,7 +20,18 @@
     if (!class) {
         class = self;
     }
-    return [class getConfigParams:key];
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    NSString *versionParam = [NSString stringWithFormat:@"%@_%@", key, appVersion];
+    NSString *result = [class getConfigParams:versionParam];
+    
+    if (result == nil) {
+        result = [class getConfigParams:key];
+        
+        if (result == nil && defaultValue != nil) {
+            result = defaultValue;
+        }
+    }
+    return result;
 }
 
 + (NSString *)fcxGetConfigParams:(NSString *)key {
@@ -31,8 +42,11 @@
 + (id)fcxGetJSONConfigParams:(NSString *)key {
     
     NSString *paramsString = [self fcxGetConfigParams:key defaultValue:@""];
-    id jsonConfigParams  = [NSJSONSerialization JSONObjectWithData:[paramsString dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableLeaves error:nil];
-    return jsonConfigParams;
+    if (![paramsString isKindOfClass:[NSString class]]) {
+        return nil;
+    }
+    
+    return [NSJSONSerialization JSONObjectWithData:[paramsString dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableLeaves error:nil];
 }
 
 
