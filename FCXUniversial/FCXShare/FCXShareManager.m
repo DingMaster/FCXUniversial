@@ -13,6 +13,7 @@
 #import <MessageUI/MessageUI.h>
 #import <TencentOpenAPI/QQApiInterface.h>
 #import "FCXDefine.h"
+#import "MobClick.h"
 
 #define SHARE_TITLE_NORMALCOLOR UICOLOR_FROMRGB(0x343233)
 #define SHARE_TITLE_HCOLOR UICOLOR_FROMRGB(0x818081)
@@ -44,7 +45,7 @@
         self.backgroundColor = [UIColor colorWithWhite:0 alpha:.6];
         
         [self judgeBottomHeight];
-
+        
         _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, _bottomHeight)];
         _bottomView.backgroundColor = [UIColor colorWithWhite:1 alpha:.9];
         _bottomView.backgroundColor = UICOLOR_FROMRGB(0xf0f0f0);
@@ -216,7 +217,7 @@
     [window addSubview:self];
     
     __weak typeof(self) weakSelf = self;
-
+    
     UIView *weakBottomView = _bottomView;
     [UIView animateWithDuration:.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         weakSelf.backgroundColor = [UIColor colorWithWhite:0 alpha:.6];
@@ -240,7 +241,7 @@
 
 - (void)setShareType:(FCXShareType)shareType {
     _shareType = shareType;
-
+    
     switch (shareType) {
         case FCXShareTypeDefault:
         {
@@ -360,7 +361,7 @@
             shareType = UMShareToWechatSession;
             
             if (self.shareType == FCXShareTypeDefault) {
-                
+                [MobClick event:@"分享" label:@"微信-邀请好友"];
                 if (self.shareURL) {
                     [UMSocialData defaultData].extConfig.wechatSessionData.url = self.shareURL;
                 }
@@ -371,12 +372,13 @@
                 shareContent = [self getShortShareContent];
                 
             }else if (self.shareType == FCXShareTypeImage) {
-                
+                [MobClick event:@"分享" label:@"微信-图片"];
                 [UMSocialData defaultData].extConfig.wxMessageType = UMSocialWXMessageTypeImage;
                 
             }else if (self.shareType == FCXShareTypeMusic) {
                 //音乐分享需要单独调用微信的，否则音乐url与跳转url冲突
                 [self shareMusicToWXWithType:WXSceneSession];
+                [MobClick event:@"分享" label:@"微信-音乐"];
                 return;
             }
         }
@@ -386,7 +388,7 @@
             shareType = UMShareToWechatTimeline;
             
             if (self.shareType == FCXShareTypeDefault) {
-                
+                [MobClick event:@"分享" label:@"朋友圈-邀请好友"];
                 if (self.shareURL) {
                     [UMSocialData defaultData].extConfig.wechatSessionData.url = self.shareURL;
                 }
@@ -398,12 +400,13 @@
                 shareContent = [self getShortShareContent];
                 
             }else if (self.shareType == FCXShareTypeImage) {
-                
+                [MobClick event:@"分享" label:@"朋友圈-图片"];
                 [UMSocialData defaultData].extConfig.wxMessageType = UMSocialWXMessageTypeImage;
                 
             }else if (self.shareType == FCXShareTypeMusic) {
                 //音乐分享需要单独调用微信的，否则音乐url与跳转url冲突
                 [self shareMusicToWXWithType:WXSceneTimeline];
+                [MobClick event:@"分享" label:@"朋友圈-音乐"];
                 return;
             }
         }
@@ -413,7 +416,7 @@
             shareType = UMShareToQQ;
             
             if (self.shareType == FCXShareTypeDefault) {
-                
+                [MobClick event:@"分享" label:@"QQ-邀请好友"];
                 if (self.shareURL) {
                     [UMSocialData defaultData].extConfig.qqData.url = self.shareURL;
                 }
@@ -424,7 +427,7 @@
                 [UMSocialData defaultData].extConfig.qqData.qqMessageType = UMSocialQQMessageTypeDefault;
                 
             }else if (self.shareType == FCXShareTypeImage) {
-                
+                [MobClick event:@"分享" label:@"QQ-图片"];
                 [UMSocialData defaultData].extConfig.qqData.url = nil;
                 [UMSocialData defaultData].extConfig.qqData.title = nil;
                 [UMSocialData defaultData].extConfig.qqData.qqMessageType = UMSocialQQMessageTypeImage;
@@ -432,6 +435,7 @@
             }else if (self.shareType == FCXShareTypeMusic) {
                 //音乐分享需要单独调用腾讯的，否则音乐url与跳转url冲突
                 [self shareMusicToQQWithType:0];
+                [MobClick event:@"分享" label:@"QQ-音乐"];
                 return;
             }
         }
@@ -441,7 +445,7 @@
             shareType = UMShareToQzone;
             
             if (self.shareType == FCXShareTypeDefault) {
-                
+                [MobClick event:@"分享" label:@"QZone-邀请好友"];
                 if (self.shareURL) {
                     [UMSocialData defaultData].extConfig.qzoneData.url = self.shareURL;
                 }
@@ -451,11 +455,12 @@
                 shareContent = [self getShortShareContent];
                 
             }else if (self.shareType == FCXShareTypeImage) {//qq空间必须有内容
+                [MobClick event:@"分享" label:@"QZone-图片"];
                 [UMSocialData defaultData].extConfig.qzoneData.url = self.shareURL;
                 [UMSocialData defaultData].extConfig.qzoneData.title = self.shareTitle;
                 
             }else if (self.shareType == FCXShareTypeMusic) {
-                
+                [MobClick event:@"分享" label:@"QZone-音乐"];
                 //音乐分享需要单独调用腾讯的，否则音乐url与跳转url冲突
                 [self shareMusicToQQWithType:1];
                 return;
@@ -470,14 +475,16 @@
             }
             
             if (self.shareType == FCXShareTypeDefault) {
-                
+                [MobClick event:@"分享" label:@"新浪-邀请好友"];
                 if (self.shareURL) {
                     shareContent = [shareContent stringByAppendingString:self.shareURL];
                 }
                 
             }else if (self.shareType == FCXShareTypeImage) {
+                [MobClick event:@"分享" label:@"新浪-图片"];
                 
             }else if (self.shareType == FCXShareTypeMusic) {
+                [MobClick event:@"分享" label:@"新浪-音乐"];
                 shareContent = [NSString stringWithFormat:@"%@", self.shareTitle, self.shareURL];
             }
             
@@ -488,12 +495,14 @@
             shareType = UMShareToSms;
             
             if (self.shareType == FCXShareTypeDefault) {
+                [MobClick event:@"分享" label:@"SMS-邀请好友"];
                 shareImage = nil;
                 shareContent = [shareContent stringByAppendingString:self.shareURL];
                 
             }else if (self.shareType == FCXShareTypeImage) {
-                
+                [MobClick event:@"分享" label:@"SMS-图片"];
             }else if (self.shareType == FCXShareTypeMusic) {
+                [MobClick event:@"分享" label:@"SMS-音乐"];
                 shareImage = nil;
                 shareContent = [shareContent stringByAppendingString:self.shareURL];
             }
