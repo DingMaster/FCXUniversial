@@ -40,6 +40,14 @@
  */
 - (void)splashAdClosed:(GDTSplashAd *)splashAd;
 
+/**
+ *  开屏广告点击以后即将弹出全屏广告页
+ */
+- (void)splashAdWillPresentFullScreenModal:(GDTSplashAd *)splashAd;
+/**
+ *  点击以后全屏广告页已经被关闭
+ */
+- (void)splashAdDidDismissFullScreenModal:(GDTSplashAd *)splashAd;
 @end
 
 @interface GDTSplashAd : NSObject
@@ -70,9 +78,18 @@
 
 /**
  *  广告发起请求并展示在Window中
- *  详解：[必选]发起拉取广告请求,并将获取的广告以全屏形式展示在传入的Window参数中
+ *  详解：[可选]发起拉取广告请求,并将获取的广告以全屏形式展示在传入的Window参数中
  *  @param window 展示全屏开屏的容器
  */
 -(void)loadAdAndShowInWindow:(UIWindow *)window;
+
+/**
+ *  广告发起请求并展示在Window中, 同时在屏幕底部设置应用自身的Logo页面或是自定义View
+ *  详解：[可选]发起拉取广告请求,并将获取的广告以半屏形式展示在传入的Window的上半部，剩余部分展示传入的bottomView
+ *       请注意bottomView需设置好宽高，所占的空间不能过大，并保证广告界面的高度大于360
+ *  @param window 展示开屏的容器
+ *         bottomView 自定义底部View，可以在此View中设置应用Logo
+ */
+-(void)loadAdAndShowInWindow:(UIWindow *)window withBottomView:(UIView *)bottomView;
 
 @end
