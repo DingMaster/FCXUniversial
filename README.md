@@ -61,7 +61,7 @@ FCXDefine里面写了一些常用的宏定义，FCXCategory文件夹有常用的
 
 
 ##开屏广告
-导入AppDelegate+GS.h、AppDelegate+GS.m文件，然后在setupS函数修改里面两个地方：
+全开平导入`AppDelegate+GS.h、AppDelegate+GS.m`文件；半开平导入`AppDelegate+HalfGS.h、AppDelegate+HalfGS.m`文件，然后在`setupS`函数修改里面两个地方：
 * 1.修改时间（这个时间每次提交AppStore都要修改，时间修改为审核提交日往后退15天），这里的时间是为了用户第一次下载启动时获取不了友盟参数，这时默认不显示开屏广告，为了收益在获取不到参数时显示开屏.
 ```objc
 showSplash = ([currentDateString compare:@"2016-04-26"] == NSOrderedDescending);
@@ -243,7 +243,7 @@ annotation:(id)annotation {
 ```objc
 #import "FCXAboutController.h"
 ```
-设置数（详情可点击头文件查看注释）:
+设置属性（详情可点击头文件查看注释）:
 ```objc
 @property (nonatomic, copy) NSString *imageName;
 @property (nonatomic, copy) NSString *appName;
