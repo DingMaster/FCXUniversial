@@ -5,13 +5,11 @@
 //  Copyright 2012 Google Inc. All rights reserved.
 //
 
-#import <GoogleMobileAds/DFPCustomRenderedInterstitialDelegate.h>
-#import <GoogleMobileAds/GADAppEventDelegate.h>
 #import <GoogleMobileAds/GADCorrelator.h>
 #import <GoogleMobileAds/GADInterstitial.h>
-#import <GoogleMobileAds/GoogleMobileAdsDefines.h>
 
-GAD_ASSUME_NONNULL_BEGIN
+@protocol DFPCustomRenderedInterstitialDelegate;
+@protocol GADAppEventDelegate;
 
 @interface DFPInterstitial : GADInterstitial
 
@@ -23,15 +21,13 @@ GAD_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly, copy) NSString *adUnitID;
 
 /// Correlator object for correlating this object to other ad objects.
-@property(nonatomic, strong, GAD_NULLABLE) GADCorrelator *correlator;
+@property(nonatomic, strong) GADCorrelator *correlator;
 
 /// Optional delegate that is notified when creatives send app events.
-@property(nonatomic, weak, GAD_NULLABLE) id<GADAppEventDelegate> appEventDelegate;
+@property(nonatomic, weak) id<GADAppEventDelegate> appEventDelegate;
 
 /// Optional delegate object for custom rendered ads.
-@property(nonatomic, weak, GAD_NULLABLE)
+@property(nonatomic, weak)
     id<DFPCustomRenderedInterstitialDelegate> customRenderedInterstitialDelegate;
 
 @end
-
-GAD_ASSUME_NONNULL_END

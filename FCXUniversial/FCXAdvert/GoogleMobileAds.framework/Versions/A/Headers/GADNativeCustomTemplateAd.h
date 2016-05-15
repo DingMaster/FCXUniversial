@@ -13,10 +13,11 @@
 #import <GoogleMobileAds/GADNativeAdImage.h>
 #import <GoogleMobileAds/GoogleMobileAdsDefines.h>
 
-/// Native custom template ad. To request this ad type, you need to pass
-/// kGADAdLoaderAdTypeNativeCustomTemplate (see GADAdLoaderAdTypes.h) to the |adTypes| parameter in
-/// GADAdLoader's initializer method. If you request this ad type, your delegate must conform to the
-/// GADNativeCustomTemplateAdLoaderDelegate protocol.
+/// For use with GADAdLoader's creation methods. If you request this ad type, your delegate must
+/// conform to the GADNativeCustomTemplateAdLoaderDelegate protocol.
+GAD_EXTERN NSString *const kGADAdLoaderAdTypeNativeCustomTemplate;
+
+/// Native custom template ad.
 @interface GADNativeCustomTemplateAd : GADNativeAd
 
 /// The ad's custom template ID.

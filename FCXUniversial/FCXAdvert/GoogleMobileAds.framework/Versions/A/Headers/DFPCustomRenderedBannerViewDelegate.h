@@ -7,20 +7,14 @@
 
 #import <UIKit/UIKit.h>
 
-#import <GoogleMobileAds/GoogleMobileAdsDefines.h>
-
 @class DFPBannerView;
 @class DFPCustomRenderedAd;
-
-GAD_ASSUME_NONNULL_BEGIN
 
 @protocol DFPCustomRenderedBannerViewDelegate<NSObject>
 
 /// Called after ad data has been received. You must construct a banner from |customRenderedAd| and
-/// call the |customRenderedAd| object's finishedRenderingAdView: when the ad has been rendered.
+/// call the |customRenderedAd| object's finishedRenderingAdView: when the ad is rendered.
 - (void)bannerView:(DFPBannerView *)bannerView
     didReceiveCustomRenderedAd:(DFPCustomRenderedAd *)customRenderedAd;
 
 @end
-
-GAD_ASSUME_NONNULL_END

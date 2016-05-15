@@ -7,12 +7,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import <GoogleMobileAds/GoogleMobileAdsDefines.h>
-
 @class DFPCustomRenderedAd;
 @class DFPInterstitial;
-
-GAD_ASSUME_NONNULL_BEGIN
 
 @protocol DFPCustomRenderedInterstitialDelegate<NSObject>
 
@@ -23,5 +19,3 @@ GAD_ASSUME_NONNULL_BEGIN
     didReceiveCustomRenderedAd:(DFPCustomRenderedAd *)customRenderedAd;
 
 @end
-
-GAD_ASSUME_NONNULL_END
