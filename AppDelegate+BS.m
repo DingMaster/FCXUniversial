@@ -61,6 +61,7 @@
     }
     showSplash = YES;
     if (!showSplash) {
+        [FCXGuide startGuide];
         return;
     }
     
