@@ -59,7 +59,7 @@
         
         showSplash = ([currentDateString compare:@"2016-02-29"] == NSOrderedDescending);
     }
-    showSplash = YES;
+
     if (!showSplash) {
         [FCXGuide startGuide];
         return;
