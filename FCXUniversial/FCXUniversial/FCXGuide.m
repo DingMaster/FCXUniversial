@@ -8,7 +8,7 @@
 
 #import "FCXGuide.h"
 #import "FCXOnlineConfig.h"
-
+#import "MobClick.h"
 
 @implementation MAlertViw
 
@@ -77,8 +77,11 @@
         alertView.handleAction = ^(MAlertViw *alertView, NSInteger buttonIndex){
 
             if (buttonIndex == 1) {
+                [MobClick event:@"引导" label:right];
                 NSString *strUrl =[NSString stringWithFormat: @"https://itunes.apple.com/us/app/id%@", appid];
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:strUrl]];
+            }else {
+                [MobClick event:@"引导" label:left];
             }
 
         };
