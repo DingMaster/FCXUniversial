@@ -77,7 +77,7 @@
         alertView.handleAction = ^(MAlertViw *alertView, NSInteger buttonIndex){
 
             if (buttonIndex == 1) {
-                [MobClick event:@"引导" label:right];
+                [MobClick event:@"引导" label:appid];
                 NSString *strUrl =[NSString stringWithFormat: @"https://itunes.apple.com/us/app/id%@", appid];
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:strUrl]];
             }else {
