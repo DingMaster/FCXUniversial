@@ -485,7 +485,7 @@
                 
             }else if (self.shareType == FCXShareTypeMusic) {
                 [MobClick event:@"分享" label:@"新浪-音乐"];
-                shareContent = [NSString stringWithFormat:@"%@", self.shareTitle, self.shareURL];
+                shareContent = [NSString stringWithFormat:@"%@%@", self.shareTitle, self.shareURL];
             }
             
         }
