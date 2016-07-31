@@ -84,10 +84,11 @@
 #pragma mark - 创建所有的分享按钮（每次show的时候都需要调用，因为本地的第三方软件随时可能发生变化，删除或者下载）
 - (void)createShareButtons {
     int i = 0;
+    CGFloat buttonWidth = 65;
+    CGFloat buttonHeighh = 85;
+    CGFloat space = (SCREEN_WIDTH - buttonWidth * 4)/5.0;
+    
     for (int j = 0; j < 7; j++) {
-        CGFloat buttonWidth = 65;
-        CGFloat buttonHeighh = 85;
-        CGFloat space = (SCREEN_WIDTH - buttonWidth * 4)/5.0;
         CGRect buttonFrame = CGRectMake(space + (i%4) * (buttonWidth + space), 10 + (i/4) * (buttonHeighh + 5), buttonWidth, buttonHeighh);
         UIButton *shareButton;
         switch (j) {
