@@ -35,6 +35,26 @@
 #define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
 
+#pragma mark - 图片相关
+//读取本地图片,无缓存
+#define LOADIMAGE(file,ext) [UIImage imageWithContentsOfFile:[[NSBundle mainBundle]pathForResource:file ofType:ext]]
+//读取本地png图片,无缓存
+#define LOADPNGIMAGE(A) [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:A ofType:@"png"]]
+//读取本地图片,有缓存
+#define IMAGENAMED(name) [UIImage imageNamed:name]
+
+
+#pragma mark -  循环引用
+#define WeakSelf __weak typeof(self) weakSelf = self;
+#define StrongSelf __strong typeof (weakSelf) strongSelf = weakSelf;
+
+#define WeakObj(type)  __weak typeof(type) type##Weak = type;
+#define StrongObj(type)  __strong typeof(type##Weak) type##Strong = type##Weak;
+
+
+//默认字体
+#define DEFAULTFONT(fontSize) [UIFont fontWithName:@"HelveticaNeue-Light" size:fontSize]
+
 
 #pragma mark -  调试
 #ifdef DEBUG
