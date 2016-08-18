@@ -41,65 +41,6 @@
         return;
     }
     
-    if (![self isValidTime]) {
-        return;
-    }
-    
-    NSDictionary *paramsDict = [FCXOnlineConfig fcxGetJSONConfigParams:@"ratingContent"];
-    if (![paramsDict isKindOfClass:[NSDictionary class]]) {
-        return;
-    }
-    //    NSLog(@"==%@", paramsDict);
-    NSString *title = [paramsDict objectForKey:@"标题"];
-    NSString *content = [paramsDict objectForKey:@"内容"];
-    NSString *btn1 = [paramsDict objectForKey:@"按钮1"];
-    NSString *btn2 = [paramsDict objectForKey:@"按钮2"];
-    //    NSString *btn3 = [paramsDict objectForKey:@"按钮3"];
-    NSInteger alertTimes = [[paramsDict objectForKey:@"总提醒次数"] integerValue];
-    
-    if (!title || !content || !btn1 || !btn2) {
-        return;
-    }
-    
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *currentDateString = [self getCurrentDateString];
-    NSString *alertDateString = [userDefaults objectForKey:@"alertDate"];
-    if (alertDateString && [alertDateString isEqualToString:currentDateString]) {//当天弹出过
-        return;
-    }
-    
-    if ([userDefaults integerForKey:@"alertTimes"] >= alertTimes) {//超过弹出次数
-        return;
-    }
-    
-    MAlertViw *alertView = [[MAlertViw alloc] initWithTitle:title message:content delegate:nil cancelButtonTitle:nil otherButtonTitles:btn1, btn2, nil];
-    alertView.dismiss = YES;
-    [alertView show];
-    
-    alertView.handleAction = ^(MAlertViw *alertView, NSInteger buttonIndex){
-        
-        if (buttonIndex == 0) {
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                UIViewController *vc = [UIApplication sharedApplication].keyWindow.rootViewController;
-                [vc presentViewController:[UMFeedback feedbackModalViewController] animated:YES completion:^{
-                    
-                }];
-            });
-            
-        }else if(buttonIndex == 1) {
-            
-            [FCXRating goRating:appID];
-            [FCXRating saveRating];
-        }else {
-            //            [FCXRating saveRating];
-        }
-    };
-    
-    [self saveAlert];
-}
-
-- (BOOL)isValidTime {
     NSString *urlString = @"http://www.baidu.com";
     urlString = [urlString stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -108,31 +49,84 @@
     [request setTimeoutInterval: 2];
     [request setHTTPShouldHandleCookies:FALSE];
     [request setHTTPMethod:@"GET"];
-    NSHTTPURLResponse *response;
-    [NSURLConnection sendSynchronousRequest:request
-                          returningResponse:&response error:nil];
-    if (!response) {
-        return NO;
-    }
     
-    NSString *dateString = [[response allHeaderFields] objectForKey:@"Date"];
-    dateString = [dateString substringWithRange:NSMakeRange(5, 20)];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"dd MMM yyyy HH:mm:ss"];
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+            NSString *dateString = [[(NSHTTPURLResponse *)response allHeaderFields] objectForKey:@"Date"];
+            dateString = [dateString substringWithRange:NSMakeRange(5, 20)];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"dd MMM yyyy HH:mm:ss"];
+            
+            dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
+            dateFormatter.locale = [[NSLocale alloc]initWithLocaleIdentifier:@"en_US_POSIX"];
+            
+            NSDate *date = [dateFormatter dateFromString:dateString];
+            
+            [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT+0800"]];
+            dateString = [dateFormatter stringFromDate:date];
+            NSInteger house = [[dateString substringWithRange:NSMakeRange(12, 2)] integerValue];
+            if (house >= 11 && house <= 20) {//符合时间
+                
+                NSDictionary *paramsDict = [FCXOnlineConfig fcxGetJSONConfigParams:@"ratingContent"];
+                if (![paramsDict isKindOfClass:[NSDictionary class]]) {
+                    return;
+                }
+                //    NSLog(@"==%@", paramsDict);
+                NSString *title = [paramsDict objectForKey:@"标题"];
+                NSString *content = [paramsDict objectForKey:@"内容"];
+                NSString *btn1 = [paramsDict objectForKey:@"按钮1"];
+                NSString *btn2 = [paramsDict objectForKey:@"按钮2"];
+                //    NSString *btn3 = [paramsDict objectForKey:@"按钮3"];
+                NSInteger alertTimes = [[paramsDict objectForKey:@"总提醒次数"] integerValue];
+                
+                if (!title || !content || !btn1 || !btn2) {
+                    return;
+                }
+                
+                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                NSString *currentDateString = [self getCurrentDateString];
+                NSString *alertDateString = [userDefaults objectForKey:@"alertDate"];
+                if (alertDateString && [alertDateString isEqualToString:currentDateString]) {//当天弹出过
+                    return;
+                }
+                
+                if ([userDefaults integerForKey:@"alertTimes"] >= alertTimes) {//超过弹出次数
+                    return;
+                }
+                
+                MAlertViw *alertView = [[MAlertViw alloc] initWithTitle:title message:content delegate:nil cancelButtonTitle:nil otherButtonTitles:btn1, btn2, nil];
+                alertView.dismiss = YES;
+                [alertView show];
+                
+                alertView.handleAction = ^(MAlertViw *alertView, NSInteger buttonIndex){
+                    
+                    if (buttonIndex == 0) {
+                        
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                            UIViewController *vc = [UIApplication sharedApplication].keyWindow.rootViewController;
+                            [vc presentViewController:[UMFeedback feedbackModalViewController] animated:YES completion:^{
+                                
+                            }];
+                        });
+                        
+                    }else if(buttonIndex == 1) {
+                        
+                        [FCXRating goRating:appID];
+                        [FCXRating saveRating];
+                    }else {
+                        //            [FCXRating saveRating];
+                    }
+                };
+                
+                [self saveAlert];
+
+                
+            }
+        }
+    }];
     
-    dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
-    dateFormatter.locale = [[NSLocale alloc]initWithLocaleIdentifier:@"en_US_POSIX"];
-    
-    NSDate *date = [dateFormatter dateFromString:dateString];
-    
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT+0800"]];
-    dateString = [dateFormatter stringFromDate:date];
-    NSInteger house = [[dateString substringWithRange:NSMakeRange(12, 2)] integerValue];
-    
-    if (house >= 11 && house <= 20) {
-        return YES;
-    }
-    return NO;
+    [task resume];
 }
 
 //保存提醒的日期和次数
