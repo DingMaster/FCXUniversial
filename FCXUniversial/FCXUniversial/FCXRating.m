@@ -41,6 +41,10 @@
         return;
     }
     
+    if (![self isValidTime]) {
+        return;
+    }
+    
     NSDictionary *paramsDict = [FCXOnlineConfig fcxGetJSONConfigParams:@"ratingContent"];
     if (![paramsDict isKindOfClass:[NSDictionary class]]) {
         return;
@@ -95,6 +99,41 @@
     [self saveAlert];
 }
 
+- (BOOL)isValidTime {
+    NSString *urlString = @"http://www.baidu.com";
+    urlString = [urlString stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString: urlString]];
+    [request setCachePolicy:NSURLRequestReloadIgnoringCacheData];
+    [request setTimeoutInterval: 2];
+    [request setHTTPShouldHandleCookies:FALSE];
+    [request setHTTPMethod:@"GET"];
+    NSHTTPURLResponse *response;
+    [NSURLConnection sendSynchronousRequest:request
+                          returningResponse:&response error:nil];
+    if (!response) {
+        return NO;
+    }
+    
+    NSString *dateString = [[response allHeaderFields] objectForKey:@"Date"];
+    dateString = [dateString substringWithRange:NSMakeRange(5, 20)];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd MMM yyyy HH:mm:ss"];
+    
+    dateFormatter.timeZone = [NSTimeZone timeZoneWithName:@"GMT"];
+    dateFormatter.locale = [[NSLocale alloc]initWithLocaleIdentifier:@"en_US_POSIX"];
+    
+    NSDate *date = [dateFormatter dateFromString:dateString];
+    
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT+0800"]];
+    dateString = [dateFormatter stringFromDate:date];
+    NSInteger house = [[dateString substringWithRange:NSMakeRange(12, 2)] integerValue];
+    
+    if (house >= 11 && house <= 20) {
+        return YES;
+    }
+    return NO;
+}
 
 //保存提醒的日期和次数
 - (void)saveAlert {
