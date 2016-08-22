@@ -391,7 +391,7 @@
             if (self.shareType == FCXShareTypeDefault) {
                 [MobClick event:@"分享" label:@"朋友圈-邀请好友"];
                 if (self.shareURL) {
-                    [UMSocialData defaultData].extConfig.wechatSessionData.url = self.shareURL;
+                    [UMSocialData defaultData].extConfig.wechatTimelineData.url = self.shareURL;
                 }
                 if (self.shareTitle) {
                     [UMSocialData defaultData].extConfig.wechatTimelineData.title = self.shareTitle;
