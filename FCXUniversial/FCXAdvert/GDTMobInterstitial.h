@@ -61,6 +61,26 @@
  */
 - (void)interstitialClicked:(GDTMobInterstitial *)interstitial;
 
+/**
+ *  点击插屏广告以后即将弹出全屏广告页
+ */
+- (void)interstitialAdWillPresentFullScreenModal:(GDTMobInterstitial *)interstitial;
+
+/**
+ *  点击插屏广告以后弹出全屏广告页
+ */
+- (void)interstitialAdDidPresentFullScreenModal:(GDTMobInterstitial *)interstitial;
+
+/**
+ *  全屏广告页将要关闭
+ */
+- (void)interstitialAdWillDismissFullScreenModal:(GDTMobInterstitial *)interstitial;
+
+/**
+ *  全屏广告页被关闭
+ */
+- (void)interstitialAdDidDismissFullScreenModal:(GDTMobInterstitial *)interstitial;
+
 @end
 
 @interface GDTMobInterstitial : NSObject

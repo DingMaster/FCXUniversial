@@ -14,6 +14,7 @@
 
 @protocol GDTSplashAdDelegate <NSObject>
 
+@optional
 /**
  *  开屏广告成功展示
  */
@@ -36,6 +37,11 @@
 - (void)splashAdClicked:(GDTSplashAd *)splashAd;
 
 /**
+ *  开屏广告将要关闭回调
+ */
+- (void)splashAdWillClosed:(GDTSplashAd *)splashAd;
+
+/**
  *  开屏广告关闭回调
  */
 - (void)splashAdClosed:(GDTSplashAd *)splashAd;
@@ -44,10 +50,22 @@
  *  开屏广告点击以后即将弹出全屏广告页
  */
 - (void)splashAdWillPresentFullScreenModal:(GDTSplashAd *)splashAd;
+
 /**
- *  点击以后全屏广告页已经被关闭
+ *  开屏广告点击以后弹出全屏广告页
+ */
+- (void)splashAdDidPresentFullScreenModal:(GDTSplashAd *)splashAd;
+
+/**
+ *  点击以后全屏广告页将要关闭
+ */
+- (void)splashAdWillDismissFullScreenModal:(GDTSplashAd *)splashAd;
+
+/**
+ *  点击以后全屏广告页已经关闭
  */
 - (void)splashAdDidDismissFullScreenModal:(GDTSplashAd *)splashAd;
+
 @end
 
 @interface GDTSplashAd : NSObject
@@ -69,6 +87,11 @@
  *  可以设置开屏图片来作为开屏加载时的默认图片
  */
 @property (nonatomic, copy) UIColor *backgroundColor;
+
+/**
+ * 跳过按钮的位置
+ */
+@property (nonatomic, assign) CGPoint  skipButtonCenter;
 
 /**
  *  构造方法

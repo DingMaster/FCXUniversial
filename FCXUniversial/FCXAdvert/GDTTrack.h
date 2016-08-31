@@ -10,6 +10,10 @@
 
 /*! 当用户完成注册操作的时候的事件名 */
 extern NSString *const GDTSDKAppEventNameCompletedRegistration;
+/*! 当用户加入购物车操作的事件名 */
+extern NSString *const GDTSDKAppEventNameAddToCart;
+/*! 当用户完成购买进行付费行为的事件名 */
+extern NSString *const GDTSDKAppEventNamePurchase;
 
 @interface GDTTrack : NSObject
 
