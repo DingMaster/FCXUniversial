@@ -20,8 +20,8 @@ s.source_files  = "FCXUniversial/FCXAbout/", "FCXUniversial/FCXDiscover/", "FCXU
 
 s.resources = "FCXUniversial/FCXShare/ShareIcon/*.png", "UMSocial/**/*.{bundle,xib,.lproj}"
 
- s.vendored_libraries = "FCXUniversial/FCXAdvert/libGDTMobSDK.a", "FCXUniversial/FCXAdvert/Baidu/libBaiduMobAdSdk64bit.a", "UMSocial/**/*.a"
- s.vendored_frameworks = "FCXUniversial/FCXAdvert/GoogleMobileAds.framework", "UMSocial/**/*.framework", "UMSocial/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI/TencentOpenAPI.framework"
+ s.vendored_libraries = "FCXUniversial/FCXAdvert/libGDTMobSDK.a", "UMSocial/**/*.a"
+ s.vendored_frameworks = "FCXUniversial/FCXAdvert/GoogleMobileAds.framework", "FCXUniversial/FCXAdvert/Baidu/BaiduMobAdSDK.framework", "UMSocial/**/*.framework", "UMSocial/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI/TencentOpenAPI.framework"
 
   s.frameworks  = "AdSupport", "CoreLocation", "SystemConfiguration", "CoreTelephony", "Security", "StoreKit", "QuartzCore", "AudioToolbox", "AVFoundation", "CoreGraphics", "CoreMedia", "EventKit", "EventKitUI", "MessageUI", "CoreMotion", "MediaPlayer", "MessageUI", "CoreLocation", "Foundation", "WebKit"
 
