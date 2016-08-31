@@ -26,7 +26,7 @@ s.resources = "FCXUniversial/FCXShare/ShareIcon/*.png", "UMSocial/**/*.{bundle,x
   s.frameworks  = "AdSupport", "CoreLocation", "SystemConfiguration", "CoreTelephony", "Security", "StoreKit", "QuartzCore", "AudioToolbox", "AVFoundation", "CoreGraphics", "CoreMedia", "EventKit", "EventKitUI", "MessageUI", "CoreMotion", "MediaPlayer", "MessageUI", "CoreLocation", "Foundation", "WebKit"
 
 
-s.libraries = "z", "iconv", "sqlite3", "stdc++"
+s.libraries = "z", "iconv", "sqlite3", "stdc++", "c++"
 
 
   s.dependency "SDWebImage", "~> 3.7.5"
