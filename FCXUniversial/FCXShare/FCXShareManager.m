@@ -347,7 +347,9 @@
 #pragma mark - 分享
 - (void)shareButtonAction:(UIButton *)button {
     [self dismissView];
-    [self shareToPlatform:button.tag];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.27 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self shareToPlatform:button.tag];
+    });
 }
 
 - (void)shareToPlatform:(FCXSharePlatform)platform {
