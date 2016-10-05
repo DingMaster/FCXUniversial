@@ -10,6 +10,8 @@
 #import "FCXOnlineConfig.h"
 #import "FCXDefine.h"
 #import "UIViewController+Advert.h"
+#import "FCXShareManager.h"
+#import "MobClick.h"
 
 static const float FCXInitialProgressValue = 0.1f;
 static const float FCXInteractiveProgressValue = 0.5f;
@@ -23,22 +25,50 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
     NSUInteger _maxLoadCount;//Maximum number of load requests that was reached
     BOOL _interactive;//Load progress has reached the point where users may interact with the content
     UIProgressView *_progressView;
-
+    
 }
 @property (nonatomic, strong) NSURL *currentURL;
 @property (nonatomic, unsafe_unretained) float loadingProgress; //Between 0.0 and 1.0, the load progress of the current page
 
 @property (nonatomic,strong) UIWebView *webView;
+@property (nonatomic, copy) NSString *shareTitle;
 
 
 @end
 
 @implementation FCXWebViewController
 
+#pragma mark - 分享
+
+-(void)shareAction:(UIButton *)button {
+    FCXShareManager *shareManager = [FCXShareManager sharedManager];
+    shareManager.presentedController = self;
+    shareManager.shareTitle = self.shareTitle;
+    shareManager.shareContent = self.urlString;
+    shareManager.shareURL = self.urlString;
+    NSDictionary *infoPlist = [[NSBundle mainBundle] infoDictionary];
+    NSString *icon = [[infoPlist valueForKeyPath:@"CFBundleIcons.CFBundlePrimaryIcon.CFBundleIconFiles"] lastObject];
+    shareManager.shareImage = [UIImage imageNamed:icon];
+    
+    [shareManager showInviteFriendsShareView];
+    [MobClick event:@"发现分享" label:self.shareTitle];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.edgesForExtendedLayout = UIRectEdgeNone;
+    
+    UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [rightBtn setImage:[UIImage imageNamed:@"nav_more"] forState:UIControlStateNormal];
+    //    [rightBtn setImage:[UIImage imageNamed:@"nav_more_h"] forState:UIControlStateHighlighted];
+    rightBtn.frame = CGRectMake(0, 0, 60, 44);
+    rightBtn.tag = 666;
+    rightBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 25, 0, 0);
+    [rightBtn addTarget:self action:@selector(shareAction:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
+    self.navigationItem.rightBarButtonItem = rightItem;
+    
     
     CGFloat adHeight = 0;
     if ([[FCXOnlineConfig fcxGetConfigParams:@"showAdmob" defaultValue:@"1"] boolValue]) {
@@ -51,6 +81,8 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.urlString]]];
     [self.view addSubview:self.webView];
     
+    printf("111%s\n", [_webView stringByEvaluatingJavaScriptFromString:@"document.title"].UTF8String);
+    
     _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 3)];
     [self.view addSubview:_progressView];
     _progressView.progressTintColor = UICOLOR_FROMRGB(0x00bf12);
@@ -60,14 +92,14 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-
+    
     if ([request.URL.path isEqualToString:completeRPCURLPath]) {
         [self completeLoadingProgress];
         return NO;
     }
     
     BOOL isFragmentJump = NO;
-
+    
     if (request.URL.fragment) {
         NSString *nonFragmentURL = [request.URL.absoluteString stringByReplacingOccurrencesOfString:[@"#" stringByAppendingString:request.URL.fragment] withString:@""];
         isFragmentJump = [nonFragmentURL isEqualToString:webView.request.URL.absoluteString];
@@ -80,7 +112,7 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
         _currentURL = [request URL];
         [self resetLoadingProgress];
     }
-
+    
     return YES;
 }
 
@@ -98,6 +130,8 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
+    printf("22%s\n", [_webView stringByEvaluatingJavaScriptFromString:@"document.title"].UTF8String);
+    
     [self handleLoadRequestCompletion];
 }
 
@@ -119,7 +153,7 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
     float maxProgress = _interactive ? FCXFinalProgressValue : FCXInteractiveProgressValue;
     float remainPercent = (float)_loadingCount / (float)_maxLoadCount;
     float increment = (maxProgress - progress) * remainPercent;
-
+    
     progress += increment;
     progress = fmin(progress, maxProgress);
     self.loadingProgress = progress;
@@ -148,7 +182,7 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
     
     BOOL isNotRedirect = _currentURL && [_currentURL isEqual:self.webView.request.mainDocumentURL];
     BOOL complete = [readyState isEqualToString:@"complete"];
-
+    
     if (complete && isNotRedirect) {
         [self completeLoadingProgress];
     }
@@ -167,12 +201,23 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
                 _progressView.hidden = YES;
             });
         }];
-    
+        
     }else {
         [_progressView setProgress:_loadingProgress animated:YES];
-
+        
         _progressView.hidden = NO;
     }
+}
+
+- (NSString *)shareTitle {
+    if (_shareTitle) {
+        return _shareTitle;
+    }
+    
+    if (self.title) {
+        return self.title;
+    }
+    return @"";
 }
 
 @end
