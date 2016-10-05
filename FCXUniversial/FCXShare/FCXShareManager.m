@@ -230,6 +230,9 @@
 }
 
 - (void)dismissView {
+    if (self.dismissBlock) {
+        self.dismissBlock();
+    }
     __weak typeof(self) weakSelf = self;
     UIView *weakBottomView = _bottomView;
     [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{

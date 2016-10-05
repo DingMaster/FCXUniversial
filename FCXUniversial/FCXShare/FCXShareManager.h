@@ -37,6 +37,7 @@ typedef NS_ENUM(NSInteger, FCXSharePlatform) {
 //********************音乐分享用到的***************************
 @property (nonatomic, strong) NSString *shareImageURL;//!<分享图片URL（qq分享音乐用）
 @property (nonatomic, strong) NSString *musicURL;//!<音乐分享连接地址
+@property (nonatomic, copy) dispatch_block_t dismissBlock;
 
 /**
  *  分享的类型
