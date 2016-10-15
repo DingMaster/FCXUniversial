@@ -130,7 +130,7 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    printf("22%s\n", [_webView stringByEvaluatingJavaScriptFromString:@"document.title"].UTF8String);
+    _shareTitle = [_webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     
     [self handleLoadRequestCompletion];
 }
