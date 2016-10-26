@@ -81,8 +81,6 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.urlString]]];
     [self.view addSubview:self.webView];
     
-    printf("111%s\n", [_webView stringByEvaluatingJavaScriptFromString:@"document.title"].UTF8String);
-    
     _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 3)];
     [self.view addSubview:_progressView];
     _progressView.progressTintColor = UICOLOR_FROMRGB(0x00bf12);
