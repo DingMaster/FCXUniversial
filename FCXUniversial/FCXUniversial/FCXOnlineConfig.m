@@ -49,6 +49,13 @@
     return [NSJSONSerialization JSONObjectWithData:[paramsString dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableLeaves error:nil];
 }
 
++ (BOOL)fcxGetBoolConfigParams:(NSString *)key {
+    return [[self fcxGetConfigParams:key defaultValue:nil] boolValue];
+}
+
++ (BOOL)fcxGetBoolConfigParams:(NSString *)key defaultValue:(NSString*)defaultValue {
+    return [[self fcxGetConfigParams:key defaultValue:nil] boolValue];
+}
 
 
 @end

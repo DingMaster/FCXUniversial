@@ -13,5 +13,7 @@
 + (NSString *)fcxGetConfigParams:(NSString *)key;
 + (NSString *)fcxGetConfigParams:(NSString *)key defaultValue:(NSString*)defaultValue;
 + (id)fcxGetJSONConfigParams:(NSString *)key;
++ (BOOL)fcxGetBoolConfigParams:(NSString *)key;
++ (BOOL)fcxGetBoolConfigParams:(NSString *)key defaultValue:(NSString*)defaultValue;
 
 @end
