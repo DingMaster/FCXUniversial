@@ -16,8 +16,8 @@
 
 @implementation FCXRating
 
-+ (void)startRating:(NSString *)appID {
-    [[FCXRating sharedRating] fcx_startRating:appID];
++ (BOOL)startRating:(NSString *)appID {
+    return [[FCXRating sharedRating] fcx_startRating:appID];
 }
 
 + (FCXRating *)sharedRating {
@@ -29,21 +29,21 @@
     return rating;
 }
 
-- (void)fcx_startRating:(NSString *)appID {
+- (BOOL)fcx_startRating:(NSString *)appID {
     
     BOOL showRating = [[FCXOnlineConfig fcxGetConfigParams:@"showRating" defaultValue:@"0"] boolValue];
     if (!showRating) {
-        return;
+        return NO;
     }
     [self checkAppVersion];
     
     if (self.hasRating) {
-        return;
+        return NO;
     }
     
     NSDictionary *paramsDict = [FCXOnlineConfig fcxGetJSONConfigParams:@"ratingContent"];
     if (![paramsDict isKindOfClass:[NSDictionary class]]) {
-        return;
+        return NO;
     }
     //    NSLog(@"==%@", paramsDict);
     NSString *title = [paramsDict objectForKey:@"标题"];
@@ -54,18 +54,18 @@
     NSInteger alertTimes = [[paramsDict objectForKey:@"总提醒次数"] integerValue];
     
     if (!title || !content || !btn1 || !btn2) {
-        return;
+        return NO;
     }
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *currentDateString = [self getCurrentDateString];
     NSString *alertDateString = [userDefaults objectForKey:@"alertDate"];
     if (alertDateString && [alertDateString isEqualToString:currentDateString]) {//当天弹出过
-        return;
+        return NO;
     }
     
     if ([userDefaults integerForKey:@"alertTimes"] >= alertTimes) {//超过弹出次数
-        return;
+        return NO;
     }
     
     MAlertViw *alertView = [[MAlertViw alloc] initWithTitle:title message:content delegate:nil cancelButtonTitle:nil otherButtonTitles:btn1, btn2, nil];
@@ -93,6 +93,7 @@
     };
     
     [self saveAlert];
+    return YES;
 }
 
 //保存提醒的日期和次数
