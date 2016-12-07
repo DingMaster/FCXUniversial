@@ -33,6 +33,10 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
 @property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic, copy) NSString *shareTitle;
 
+@property (nonatomic, strong) UIBarButtonItem *backItem;
+@property (nonatomic, strong) UIBarButtonItem *closeItem;
+
+
 
 @end
 
@@ -58,6 +62,7 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.navigationItem.leftBarButtonItem = self.backItem;
     
     UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [rightBtn setImage:[UIImage imageNamed:@"nav_more"] forState:UIControlStateNormal];
@@ -216,6 +221,104 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
         return self.title;
     }
     return @"";
+}
+
+- (UIColor *)navBackColor {
+
+    if (!_navBackColor) {
+        if (self.navigationController.navigationBar.tintColor) {
+            _navBackColor = self.navigationController.navigationBar.tintColor;
+        } else {
+            _navBackColor = [UIColor blackColor];
+        }
+    }
+    return _navBackColor;
+}
+
+#pragma mark - 返回、关闭
+- (UIImage *)backImage:(UIColor *)color {
+    CGFloat lineWidth = 3;
+    CGFloat width = 11 + lineWidth;
+    CGFloat height = 18 + lineWidth;
+    
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(width, height), NO, [UIScreen mainScreen].scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetStrokeColorWithColor(context, color.CGColor);
+    CGContextSetLineWidth(context, lineWidth);
+    
+    CGContextSetLineCap(context,
+                        kCGLineCapSquare);
+    
+    
+    CGContextBeginPath(context);//标记
+    CGContextMoveToPoint(context,
+                         width - lineWidth, lineWidth);//设置起点
+    CGContextAddLineToPoint(context,
+                            lineWidth, height/2.0);
+    CGContextAddLineToPoint(context,
+                            width - lineWidth, height - lineWidth);
+    
+    CGContextDrawPath(context,
+                      kCGPathStroke);
+    //    CGContextStrokePath(context);//绘画路径
+    
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
+}
+
+- (UIBarButtonItem *)backItem {
+    if (!_backItem) {
+        UIColor *normalColor = self.navBackColor;
+        UIColor *highlightedColor = [normalColor colorWithAlphaComponent:.5];
+        UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [backBtn setImage:[self backImage:normalColor] forState:UIControlStateNormal];
+        [backBtn setImage:[self backImage:highlightedColor] forState:UIControlStateHighlighted];
+        [backBtn setTitle:@"返回" forState:UIControlStateNormal];
+        [backBtn setTitleColor:normalColor forState:UIControlStateNormal];
+        [backBtn setTitleColor:highlightedColor forState:UIControlStateHighlighted];
+        backBtn.frame = CGRectMake(0, 0, 50, 44);
+        backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
+        backBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 0);
+        [backBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
+        backBtn.titleLabel.font = [UIFont systemFontOfSize:17];
+        _backItem = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
+    }
+    return _backItem;
+}
+
+- (UIBarButtonItem *)closeItem {
+    if (!_closeItem) {
+        UIColor *normalColor = self.navBackColor;
+        UIColor *highlightedColor = [normalColor colorWithAlphaComponent:.5];
+
+        UIButton *closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        closeBtn.frame = CGRectMake(0, 0, 50, 44);
+        [closeBtn setTitle:normalColor forState:UIControlStateNormal];
+        [closeBtn setTitleColor:normalColor forState:UIControlStateNormal];
+        [closeBtn setTitleColor:highlightedColor forState:UIControlStateHighlighted];
+        [closeBtn setTitle:@"关闭" forState:UIControlStateNormal];
+        closeBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -12, 0, 0);
+        closeBtn.titleLabel.font = [UIFont systemFontOfSize:16.5];
+        [closeBtn addTarget:self action:@selector(closeAction) forControlEvents:UIControlEventTouchUpInside];
+        _closeItem = [[UIBarButtonItem alloc] initWithCustomView:closeBtn];
+    }
+    return _closeItem;
+}
+
+- (void)backAction {
+    if (_webView.canGoBack) {
+        if (self.navigationItem.leftBarButtonItems.count < 2) {
+            self.navigationItem.leftBarButtonItems = @[self.backItem, self.closeItem];
+        }
+        [_webView goBack];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+- (void)closeAction {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end
