@@ -15,10 +15,13 @@
 #import "FCXDefine.h"
 #import "MobClick.h"
 #import "UIViewController+Advert.h"
+#import "GDTCustomView.h"
+#import "UIView+Frame.h"
+#import "UIButton+Block.h"
 
 #define IMAGE_WIDTH 40
 
-@interface MButton : UIButton
+@interface FCXDiscoverButton : UIButton
 
 @property (nonatomic, strong) UIImageView *iconImageView;
 @property (nonatomic, strong) NSDictionary *data;
@@ -26,7 +29,7 @@
 
 @end
 
-@implementation MButton
+@implementation FCXDiscoverButton
 
 - (UIImageView *)iconImageView {
     if (!_iconImageView) {
@@ -111,7 +114,7 @@
     CGFloat adHeight = 0;
     if ([[FCXOnlineConfig fcxGetConfigParams:@"showAdmobDiscover" defaultValue:@"0"] boolValue]) {
         adHeight = 50;
-        [self showAdmobBanner:CGRectMake(0, SCREEN_HEIGHT - topHeight - 50 - tabBarHeight, SCREEN_WIDTH, 50) adUnitID:[FCXOnlineConfig fcxGetConfigParams:@"AdmobID" defaultValue:ADMOBID]];
+        [self showAdmobBanner:CGRectMake(0, SCREEN_HEIGHT - topHeight - 50 - tabBarHeight, SCREEN_WIDTH, 50) adUnitID:[FCXOnlineConfig fcxGetConfigParams:@"AdmobID" defaultValue:self.admobID]];
     }
     
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - topHeight - adHeight - tabBarHeight)];
@@ -185,7 +188,7 @@
     [bgView addSubview:line];
     
     [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        DiscoverButton *btn = [DiscoverButton buttonWithType:UIButtonTypeCustom];
+        FCXDiscoverButton *btn = [FCXDiscoverButton buttonWithType:UIButtonTypeCustom];
         btn.controller = self;
         btn.needTransform = YES;
         btn.frame = CGRectMake((idx%4) * width, titleLabel.bottom + (idx/4) * width, width, width);

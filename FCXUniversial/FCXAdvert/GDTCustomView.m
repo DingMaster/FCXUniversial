@@ -10,6 +10,9 @@
 #import "GDTNativeAd.h"
 #import "UIImageView+WebCache.h"
 #import "FCXWeakTimer.h"
+#import "MobClick.h"
+#import "FCXDefine.h"
+#import "UIView+Frame.h"
 
 @interface GDTCustomView () <GDTNativeAdDelegate>
 {
