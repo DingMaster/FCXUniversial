@@ -57,7 +57,7 @@
         FCXWebViewController *webView = [[FCXWebViewController alloc] init];
         webView.hidesBottomBarWhenPushed = YES;
         webView.urlString = url;
-        webView.admobID = self.controller.admobID;
+        webView.admobID = [FCXOnlineConfig fcxGetConfigParams:@"AdmobID" defaultValue:self.controller.admobID];
         webView.title = self.data[@"title"];
         [self.controller.navigationController pushViewController:webView animated:YES];
     }else {
@@ -224,7 +224,7 @@
                 FCXWebViewController *webView = [[FCXWebViewController alloc] init];
                 webView.hidesBottomBarWhenPushed = YES;
                 webView.urlString = url;
-                webView.admobID = weakSelf.admobID;
+                webView.admobID = [FCXOnlineConfig fcxGetConfigParams:@"AdmobID" defaultValue:weakSelf.admobID];
                 webView.title = dict[@"title"];
                 [weakSelf.navigationController pushViewController:webView animated:YES];
             } else {
