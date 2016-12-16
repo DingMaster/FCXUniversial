@@ -125,7 +125,7 @@
     
     _scrollView.contentInset = UIEdgeInsetsMake(0, 0, adHeight * 2, 0);
     
-    _offsetY = 10;
+    _offsetY = 10 + _topSpace;
     int groupCount = [[FCXOnlineConfig fcxGetConfigParams:@"discover_groupCount"] intValue];
     if (groupCount > 0) {
         for (int i = 1; i <= groupCount; i++) {
