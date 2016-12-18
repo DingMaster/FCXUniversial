@@ -32,6 +32,7 @@
 //app已经进入后台后
 - (void)fcx_applicationDidEnterBackground:(UIApplication *)application {
     self.enterBackgroundDate = [NSDate date];
+    [self fcx_applicationDidEnterBackground:application];
 }
 
 //app将要进入前台
@@ -43,6 +44,7 @@
             [self setupBaiduSplash];
         }
     }
+    [self fcx_applicationWillEnterForeground:application];
 }
 
 - (void)setupBaiduSplash {
