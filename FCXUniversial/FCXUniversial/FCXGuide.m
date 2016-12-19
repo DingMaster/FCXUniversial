@@ -48,6 +48,8 @@
     NSString *left = [paramsDict objectForKey:@"左按钮"];
     NSString *right = [paramsDict objectForKey:@"右按钮"];
     NSString *appid = [paramsDict objectForKey:@"appid"];
+    __block NSString *url = [paramsDict objectForKey:@"url"];
+
     if (!type || !title || !content || !left) {
         return;
     }
@@ -56,8 +58,15 @@
         MAlertViw *alertView = [[MAlertViw alloc] initWithTitle:title message:content delegate:nil cancelButtonTitle:nil otherButtonTitles:left, nil];
         [alertView show];
         alertView.handleAction = ^(MAlertViw *alertView, NSInteger buttonIndex){
-            NSString *strUrl =[NSString stringWithFormat: @"https://itunes.apple.com/us/app/id%@", appid];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:strUrl]];
+            if (url && [url hasPrefix:@"http"]) {
+                [MobClick event:@"引导" label:url];
+                
+            } else {
+                [MobClick event:@"引导" label:appid];
+                url = [NSString stringWithFormat: @"https://itunes.apple.com/us/app/id%@", appid];
+            }
+            
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
         };
     }else {
         if (!right) {
@@ -77,9 +86,15 @@
         alertView.handleAction = ^(MAlertViw *alertView, NSInteger buttonIndex){
 
             if (buttonIndex == 1) {
-                [MobClick event:@"引导" label:appid];
-                NSString *strUrl =[NSString stringWithFormat: @"https://itunes.apple.com/us/app/id%@", appid];
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:strUrl]];
+                if (url && [url hasPrefix:@"http"]) {
+                    [MobClick event:@"引导" label:url];
+ 
+                } else {
+                    [MobClick event:@"引导" label:appid];
+                    url = [NSString stringWithFormat: @"https://itunes.apple.com/us/app/id%@", appid];
+                }
+
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
             }else {
                 [MobClick event:@"引导" label:left];
             }
