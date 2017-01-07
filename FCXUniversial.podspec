@@ -30,7 +30,7 @@ s.libraries = "z", "iconv", "sqlite3", "stdc++", "c++"
 
 
   s.dependency "SDWebImage", "~> 3.7.5"
-  s.dependency "UMengAnalytics", "~> 3.6.6"
+  s.dependency "UMengAnalytics", "~> 4.1.8"
 #s.dependency "UMengSocial", "~> 5.0"
 # s.dependency "UMOnlineConfig", "~> 0.1.0"
   s.dependency "UMengFeedback", "~> 2.3.4"
