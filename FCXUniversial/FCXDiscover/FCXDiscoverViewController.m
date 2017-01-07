@@ -13,7 +13,7 @@
 #import "UIButton+Transform.h"
 #import "FCXOnlineConfig.h"
 #import "FCXDefine.h"
-#import "MobClick.h"
+#import "UMMobClick/MobClick.h"
 #import "UIViewController+Advert.h"
 #import "GDTCustomView.h"
 #import "UIView+Frame.h"

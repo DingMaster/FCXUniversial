@@ -11,7 +11,7 @@
 #import "FCXDefine.h"
 #import "UIViewController+Advert.h"
 #import "FCXShareManager.h"
-#import "MobClick.h"
+#import "UMMobClick/MobClick.h"
 
 static const float FCXInitialProgressValue = 0.1f;
 static const float FCXInteractiveProgressValue = 0.5f;

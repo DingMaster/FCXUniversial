@@ -13,7 +13,7 @@
 #import <MessageUI/MessageUI.h>
 #import <TencentOpenAPI/QQApiInterface.h>
 #import "FCXDefine.h"
-#import "MobClick.h"
+#import "UMMobClick/MobClick.h"
 
 #define SHARE_TITLE_NORMALCOLOR UICOLOR_FROMRGB(0x343233)
 #define SHARE_TITLE_HCOLOR UICOLOR_FROMRGB(0x818081)
