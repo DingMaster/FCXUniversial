@@ -10,7 +10,7 @@
 
 @implementation FCXOnlineConfig
 
-+ (NSString *)stringParams:(NSString *)key {
++ (NSString *)getConfigParams:(NSString *)key {
     NSLog(@"\n\n\n请导入UMOnlineConfig库！\n\n\n");
     return @"";
 }
@@ -22,7 +22,7 @@
     }
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSString *versionParam = [NSString stringWithFormat:@"%@_%@", key, appVersion];
-    NSString *result = [class stringParams:versionParam];
+    NSString *result = [class getConfigParams:versionParam];
     
     if (result == nil) {
         result = [class stringParams:key];
