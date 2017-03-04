@@ -25,7 +25,7 @@
     NSString *result = [class getConfigParams:versionParam];
     
     if (result == nil) {
-        result = [class stringParams:key];
+        result = [class getConfigParams:key];
         
         if (result == nil && defaultValue != nil) {
             result = defaultValue;
