@@ -30,7 +30,7 @@
     if (self = [super init]) {
         self.controller = controller;
         
-        self.interstitial = [[GADInterstitial alloc] initWithAdUnitID:[FCXOnlineConfig fcxGetConfigParams:@"AdmobInterstitialID" defaultValue:interstitialID]];
+        self.interstitial = [[GADInterstitial alloc] initWithAdUnitID:interstitialID];
         self.interstitial.delegate = self;
     }
     return self;
