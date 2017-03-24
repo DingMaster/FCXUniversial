@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.view.backgroundColor = UICOLOR_FROMRGB(0xf5f5f5);
     if (!self.title) {
@@ -35,8 +35,11 @@
         top = 40;
     }
     
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH - 130)/2.0, top, 130, 130)];
+    CGFloat width = SCREEN_WIDTH == 320 ? 110 : 130;
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH - width)/2.0, top, width, width)];
     imageView.image = [UIImage imageNamed:self.imageName];
+    imageView.layer.cornerRadius = 5;
     [self.view addSubview:imageView];
     
     NSString *str = [NSString stringWithFormat:@"%@\n%@", self.appName, self.midString];
