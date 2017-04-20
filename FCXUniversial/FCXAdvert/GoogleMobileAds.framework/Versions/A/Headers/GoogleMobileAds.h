@@ -20,6 +20,8 @@ FOUNDATION_EXPORT const unsigned char GoogleMobileAdsVersionString[];
 #import <GoogleMobileAds/GADAdDelegate.h>
 #import <GoogleMobileAds/GADAdNetworkExtras.h>
 #import <GoogleMobileAds/GADAdSize.h>
+#import <GoogleMobileAds/GADAudioVideoManagerDelegate.h>
+#import <GoogleMobileAds/GADAudioVideoManager.h>
 #import <GoogleMobileAds/GADBannerView.h>
 #import <GoogleMobileAds/GADBannerViewDelegate.h>
 #import <GoogleMobileAds/GADCorrelator.h>
@@ -53,12 +55,15 @@ FOUNDATION_EXPORT const unsigned char GoogleMobileAdsVersionString[];
 #import <GoogleMobileAds/GADAdLoaderAdTypes.h>
 #import <GoogleMobileAds/GADAdLoaderDelegate.h>
 
+#import <GoogleMobileAds/GADAdChoicesView.h>
 #import <GoogleMobileAds/GADNativeAd.h>
 #import <GoogleMobileAds/GADNativeAdDelegate.h>
 #import <GoogleMobileAds/GADNativeAdImage.h>
 #import <GoogleMobileAds/GADNativeAdImage+Mediation.h>
 #import <GoogleMobileAds/GADNativeAppInstallAd.h>
+#import <GoogleMobileAds/GADNativeAppInstallAdAssetIDs.h>
 #import <GoogleMobileAds/GADNativeContentAd.h>
+#import <GoogleMobileAds/GADNativeContentAdAssetIDs.h>
 #import <GoogleMobileAds/GADNativeCustomTemplateAd.h>
 
 #import <GoogleMobileAds/GADNativeAdImageAdLoaderOptions.h>
@@ -86,3 +91,10 @@ FOUNDATION_EXPORT const unsigned char GoogleMobileAdsVersionString[];
 #import <GoogleMobileAds/GADAdReward.h>
 #import <GoogleMobileAds/GADRewardBasedVideoAd.h>
 #import <GoogleMobileAds/GADRewardBasedVideoAdDelegate.h>
+
+#import <GoogleMobileAds/Mediation/GADMAdNetworkAdapterProtocol.h>
+#import <GoogleMobileAds/Mediation/GADMAdNetworkConnectorProtocol.h>
+#import <GoogleMobileAds/Mediation/GADMediationAdRequest.h>
+#import <GoogleMobileAds/Mediation/GADMEnums.h>
+#import <GoogleMobileAds/Mediation/GADMRewardBasedVideoAdNetworkAdapterProtocol.h>
+#import <GoogleMobileAds/Mediation/GADMRewardBasedVideoAdNetworkConnectorProtocol.h>

@@ -14,6 +14,10 @@ extern NSString *const GDTSDKAppEventNameCompletedRegistration;
 extern NSString *const GDTSDKAppEventNameAddToCart;
 /*! 当用户完成购买进行付费行为的事件名 */
 extern NSString *const GDTSDKAppEventNamePurchase;
+/*! 当用户完成应用评分行为的事件名 */
+extern NSString *const GDTSDKAppEventNameAppScore;
+/*! 当用户完成应用搜索行为的事件名 */
+extern NSString *const GDTSDKAppEventNameAppSearch;
 
 @interface GDTTrack : NSObject
 
