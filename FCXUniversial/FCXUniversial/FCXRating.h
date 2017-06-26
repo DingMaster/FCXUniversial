@@ -17,8 +17,10 @@
  *  @param appID 当前应用的appID
  *  @param Bool 是否能够弹出好评
  */
-+ (BOOL)startRating:(NSString*)appID;
++ (void)startRating:(NSString*)appID finish:(void(^)(BOOL success))finish;
 + (void)goAppStore:(NSString*)appID;//!<下载页
 + (void)goRating:(NSString *)appID;//!<评价页
++ (void)setup;
+
 
 @end

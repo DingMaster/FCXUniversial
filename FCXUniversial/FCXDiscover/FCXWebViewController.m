@@ -294,7 +294,6 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
 
         UIButton *closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         closeBtn.frame = CGRectMake(0, 0, 50, 44);
-        [closeBtn setTitle:normalColor forState:UIControlStateNormal];
         [closeBtn setTitleColor:normalColor forState:UIControlStateNormal];
         [closeBtn setTitleColor:highlightedColor forState:UIControlStateHighlighted];
         [closeBtn setTitle:@"关闭" forState:UIControlStateNormal];
