@@ -15,7 +15,7 @@
  *  调用评价
  *
  *  @param appID 当前应用的appID
- *  @param Bool 是否能够弹出好评
+ *  @param finish 好评逻辑完成后的回调
  */
 + (void)startRating:(NSString*)appID finish:(void(^)(BOOL success))finish;
 + (void)goAppStore:(NSString*)appID;//!<下载页
