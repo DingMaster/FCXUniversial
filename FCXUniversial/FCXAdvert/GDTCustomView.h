@@ -20,7 +20,7 @@
  @param appkey      应用id
  @param placementId 广告位id
  @param controller  开发者需传入用来弹出目标页的ViewController，一般为当前ViewController
- @param controller  显示广告的标题
+ @param adName  显示广告的标题
  @return GDTCustomView
  */
 - (instancetype)initWithFrame:(CGRect)frame

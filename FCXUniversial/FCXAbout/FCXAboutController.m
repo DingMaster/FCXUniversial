@@ -37,21 +37,30 @@
     
     CGFloat width = SCREEN_WIDTH == 320 ? 110 : 130;
     
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH - width)/2.0, top, width, width)];
-    imageView.image = [UIImage imageNamed:self.imageName];
-    imageView.layer.cornerRadius = 5;
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.view.frame.size.width - 106)/2.0, 132, 106, 149)];
+    imageView.image = [UIImage imageNamed:@"login_icon"];
     [self.view addSubview:imageView];
+
+//    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH - width)/2.0, top, width, width)];
+//    imageView.image = [UIImage imageNamed:self.imageName];
+//    imageView.layer.cornerRadius = 5;
+//    [self.view addSubview:imageView];
     
     NSString *str = [NSString stringWithFormat:@"%@\n%@", self.appName, self.midString];
+    str = self.midString;
+    
     NSMutableAttributedString *attributedStr = [[NSMutableAttributedString alloc] initWithString:str];
-    
-    [attributedStr addAttribute:NSFontAttributeName
-                          value:[UIFont fontWithName:@"Helvetica-Bold" size:28]
-                          range:NSMakeRange(0, self.appName.length)];
-    
     [attributedStr addAttribute:NSFontAttributeName
                           value:[UIFont fontWithName:@"HelveticaNeue-Light" size:16]
-                          range:NSMakeRange(self.appName.length, str.length - self.appName.length)];
+                          range:NSMakeRange(0, str.length)];
+//    [attributedStr addAttribute:NSFontAttributeName
+//                          value:[UIFont fontWithName:@"Helvetica-Bold" size:28]
+//                          range:NSMakeRange(0, self.appName.length)];
+    
+//    [attributedStr addAttribute:NSFontAttributeName
+//                          value:[UIFont fontWithName:@"HelveticaNeue-Light" size:16]
+//                          range:NSMakeRange(self.appName.length, str.length - self.appName.length)];
     
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.lineSpacing = 10;

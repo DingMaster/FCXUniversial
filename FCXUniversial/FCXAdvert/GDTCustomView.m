@@ -13,6 +13,7 @@
 #import "UMMobClick/MobClick.h"
 #import "FCXDefine.h"
 #import "UIView+Frame.h"
+#import "SKA.h"
 
 @interface GDTCustomView () <GDTNativeAdDelegate>
 {
@@ -20,6 +21,7 @@
     NSString *_adName;
     UILabel *_titleLabel;
     UIImageView *_imageView;
+    UIImageView *_logoImageView;
 }
 
 @property (nonatomic, strong) GDTNativeAdData *adData;
@@ -65,6 +67,7 @@
     } else {
         [_timer setFireDate:[NSDate dateWithTimeIntervalSinceNow:30]];
     }
+    [self refreshData];
 }
 
 - (void)stopTimer {
@@ -81,13 +84,13 @@
         [_nativeAd clickAd:self.adData];
 
         if (self.eventId) {
-            [MobClick event:self.eventId label:@"点击广点通广告"];
+            [SKA event:self.eventId label:@"点击广点通广告"];
         }
     }
 }
 
 - (void)setup:(NSString *)title imgURL:(NSString *)imgURL {
-    CGFloat space = 15;
+    CGFloat space = 16;
 
     if (!_titleLabel) {
         //推广
@@ -105,7 +108,8 @@
 
         //标题
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(label.right + 5, space, self.width - label.right - space * 2 - 12, 16)];
-        _titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:16];
+        _titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:15];
+        _titleLabel.textColor = UICOLOR_FROMRGB(0x343233);
         [self addSubview:_titleLabel];
 
         UIImageView *arrowImageView = [[UIImageView alloc] initWithFrame:CGRectMake(self.width - 12 - space, _titleLabel.top, 12, 16)];
@@ -117,6 +121,10 @@
         _imageView.clipsToBounds = YES;
         _imageView.contentMode = UIViewContentModeScaleAspectFill;
         [self addSubview:_imageView];
+        
+        _logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
+        _logoImageView.image = [UIImage imageNamed:@"gdt_logo"];
+        [_imageView addSubview:_logoImageView];
     }
     
     _titleLabel.text = title;
@@ -124,11 +132,16 @@
     __weak typeof(self) weakSelf = self;
     CGFloat top = _titleLabel.bottom + 5;
     
+    __weak UIImageView *weakImageView = _imageView;
+    __weak UIImageView *weakLogoImageView = _logoImageView;
     [_imageView sd_setImageWithURL:[NSURL URLWithString:imgURL] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        
+        if (error && !image) {
+            return ;
+        }
         CGFloat height = image.size.height * ((weakSelf.frame.size.width - space * 2)/image.size.width);
         
-        _imageView.frame = CGRectMake(space, top, weakSelf.frame.size.width - space * 2, height);
+        weakImageView.frame = CGRectMake(space, top, weakSelf.frame.size.width - space * 2, height);
+        weakLogoImageView.frame = CGRectMake(5, weakImageView.frame.size.height - weakLogoImageView.frame.size.height - 5, _logoImageView.frame.size.width, weakLogoImageView.frame.size.height);
         
         weakSelf.height = top + height + space;
         if (weakSelf.loadFinishBlock) {
@@ -167,7 +180,6 @@
 - (void)nativeAdWillPresentScreen;
 {
     NSLog(@"%s", __func__);
-
 }
 
 /**
@@ -175,9 +187,7 @@
  */
 - (void)nativeAdApplicationWillEnterBackground;
 {
-
     NSLog(@"%s", __func__);
-
 }
 
 /**
@@ -186,8 +196,6 @@
 - (void)nativeAdClosed;
 {
     NSLog(@"%s", __func__);
-
 }
-
 
 @end

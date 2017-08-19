@@ -45,6 +45,7 @@ typedef NS_ENUM(NSInteger, FCXSharePlatform) {
  */
 @property (nonatomic, unsafe_unretained) FCXShareType shareType;
 
+@property (nonatomic, copy) dispatch_block_t shareSuccessBlock;
 
 + (FCXShareManager *)sharedManager;
 

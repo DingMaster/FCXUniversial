@@ -33,13 +33,20 @@
 #pragma mark - Admob
 
 - (void)showAdmobBanner:(CGRect)frame adUnitID:(NSString *)adUnitID {
-    [self showAdmobBanner:frame adUnitID:adUnitID superView:self.view];
+    [self showAdmobBanner:frame adUnitID:adUnitID superView:self.view success:nil];
 }
 
 - (void)showAdmobBanner:(CGRect)frame
                adUnitID:(NSString *)adUnitID
-              superView:(UIView *)superView {
-    
+                success:(dispatch_block_t)success {
+    [self showAdmobBanner:frame adUnitID:adUnitID superView:self.view success:success];
+}
+
+- (void)showAdmobBanner:(CGRect)frame
+               adUnitID:(NSString *)adUnitID
+              superView:(UIView *)superView
+                success:(dispatch_block_t)success {
+    self.success = success;
     self.mobbannerView.frame = frame;
     self.mobbannerView.delegate = self;
     self.mobbannerView.adUnitID = adUnitID;
@@ -55,9 +62,28 @@
     
     [self.mobbannerView loadRequest:request];
     [superView addSubview:self.mobbannerView];
+    self.mobbannerView.hidden = YES;
 }
 
+#pragma mark - GADBannerViewDelegate
 
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView;
+{
+    self.mobbannerView.hidden = NO;
+    if (self.success) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.success();
+        });
+    }
+}
+/// Tells the delegate that an ad request failed. The failure is normally due to network
+/// connectivity or ad availablility (i.e., no fill).
+- (void)adView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(GADRequestError *)error; {
+    //    NSLog(@"%s info%@", __func__, error.localizedDescription);
+    self.mobbannerView.hidden = YES;
+}
+
+#pragma mark - set get
 - (GADBannerView *)mobbannerView {
     GADBannerView *mobBannerView = objc_getAssociatedObject(self, _cmd);
     if (!mobBannerView) {
@@ -71,17 +97,12 @@
     objc_setAssociatedObject(self, @selector(mobbannerView), mobbannerView, OBJC_ASSOCIATION_RETAIN);
 }
 
-#pragma mark - GADBannerViewDelegate
-
-- (void)adViewDidReceiveAd:(GADBannerView *)bannerView;
-{
-    //    NSLog(@"%s", __func__);
-}
-/// Tells the delegate that an ad request failed. The failure is normally due to network
-/// connectivity or ad availablility (i.e., no fill).
-- (void)adView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(GADRequestError *)error; {
-    //    NSLog(@"%s info%@", __func__, error.localizedDescription);
+- (dispatch_block_t)success {
+    return objc_getAssociatedObject(self, _cmd);
 }
 
+- (void)setSuccess:(dispatch_block_t)success {
+    objc_setAssociatedObject(self, @selector(success), success, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
 
 @end

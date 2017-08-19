@@ -12,6 +12,9 @@
 
 @property (nonatomic, copy) NSString *urlString;
 @property (nonatomic, copy) NSString *admobID;
-@property (nonatomic, strong) UIColor *navBackColor;//!<导航条返回按钮颜色（没有默认取导航条的tinColor，再取不到为blackColor）
+@property (nonatomic, strong) UIColor *navBackColor;//!<导航条返回按钮颜色（没有默认取导航条的tinColor，再取不
+@property (nonatomic, strong) UIImage *backImage;
+@property (nonatomic, strong) UIImage *backImageHighlighted;
+
 
 @end

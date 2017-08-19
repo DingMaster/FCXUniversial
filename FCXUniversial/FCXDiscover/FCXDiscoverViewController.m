@@ -8,10 +8,10 @@
 
 #import "FCXDiscoverViewController.h"
 #import "UIImageView+WebCache.h"
-#import "FCXRating.h"
+#import "SKRating.h"
 #import "FCXWebViewController.h"
 #import "UIButton+Transform.h"
-#import "FCXOnlineConfig.h"
+#import "SKOnlineConfig.h"
 #import "FCXDefine.h"
 #import "UMMobClick/MobClick.h"
 #import "UIViewController+Advert.h"
@@ -57,11 +57,11 @@
         FCXWebViewController *webView = [[FCXWebViewController alloc] init];
         webView.hidesBottomBarWhenPushed = YES;
         webView.urlString = url;
-        webView.admobID = [FCXOnlineConfig fcxGetConfigParams:@"AdmobID" defaultValue:self.controller.admobID];
+        webView.admobID = [SKOnlineConfig getConfigParams:@"AdmobID" defaultValue:self.controller.admobID];
         webView.title = self.data[@"title"];
         [self.controller.navigationController pushViewController:webView animated:YES];
     }else {
-        [FCXRating goAppStore:self.data[@"appid"]];
+        [SKRating goAppStore:self.data[@"appid"] controller:[UIApplication sharedApplication].keyWindow.rootViewController];
     }
 }
 
@@ -112,9 +112,9 @@
     }
     
     CGFloat adHeight = 0;
-    if ([[FCXOnlineConfig fcxGetConfigParams:@"showAdmobDiscover" defaultValue:@"0"] boolValue]) {
+    if ([[SKOnlineConfig getConfigParams:@"showAdmobDiscover" defaultValue:@"0"] boolValue]) {
         adHeight = 50;
-        [self showAdmobBanner:CGRectMake(0, SCREEN_HEIGHT - topHeight - 50 - tabBarHeight, SCREEN_WIDTH, 50) adUnitID:[FCXOnlineConfig fcxGetConfigParams:@"AdmobID" defaultValue:self.admobID]];
+        [self showAdmobBanner:CGRectMake(0, SCREEN_HEIGHT - topHeight - 50 - tabBarHeight, SCREEN_WIDTH, 50) adUnitID:[SKOnlineConfig getConfigParams:@"AdmobID" defaultValue:self.admobID]];
     }
     
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - topHeight - adHeight - tabBarHeight)];
@@ -126,11 +126,11 @@
     _scrollView.contentInset = UIEdgeInsetsMake(0, 0, adHeight * 2, 0);
     
     _offsetY = 10 + _topSpace;
-    int groupCount = [[FCXOnlineConfig fcxGetConfigParams:@"discover_groupCount"] intValue];
+    int groupCount = [[SKOnlineConfig getConfigParams:@"discover_groupCount"] intValue];
     if (groupCount > 0) {
         for (int i = 1; i <= groupCount; i++) {
             NSString *str = [@"discover_g" stringByAppendingFormat:@"%d", i];
-            NSDictionary *dict = [FCXOnlineConfig fcxGetJSONConfigParams:str];
+            NSDictionary *dict = [SKOnlineConfig getJSONConfigParams:str];
             if ([dict isKindOfClass:[NSDictionary class]]) {
                 [self addGroup:dict];
             }
@@ -203,7 +203,7 @@
 
 - (void)setupGroup3 {
     
-    NSDictionary *dict = [FCXOnlineConfig fcxGetJSONConfigParams:@"discover_ad"];
+    NSDictionary *dict = [SKOnlineConfig getJSONConfigParams:@"discover_ad"];
     //    dict = @{@"type" : @"1", @"adName" : @"aa", @"des" : @"deasdf", @"appID":@"12345", @"imgURL": @"http://t.cn/RcyXwEw", @"url" : @"http://jump.luna.58.com/i/290p", @"title": @"网页标题"};
     if (!dict || ![dict isKindOfClass:[NSDictionary class]]) {
         return;
@@ -224,18 +224,18 @@
                 FCXWebViewController *webView = [[FCXWebViewController alloc] init];
                 webView.hidesBottomBarWhenPushed = YES;
                 webView.urlString = url;
-                webView.admobID = [FCXOnlineConfig fcxGetConfigParams:@"AdmobID" defaultValue:weakSelf.admobID];
+                webView.admobID = [SKOnlineConfig getConfigParams:@"AdmobID" defaultValue:weakSelf.admobID];
                 webView.title = dict[@"title"];
                 [weakSelf.navigationController pushViewController:webView animated:YES];
             } else {
-                [FCXRating goAppStore:dict[@"appID"]];
+                [SKRating goAppStore:dict[@"appID"] controller:self];
             }
         }];
         return;
     }
     
     //广点通
-    NSDictionary *gdtDict = [FCXOnlineConfig fcxGetJSONConfigParams:@"GDT_Info"];
+    NSDictionary *gdtDict = [SKOnlineConfig getJSONConfigParams:@"GDT_Info"];
     if([gdtDict isKindOfClass:[NSDictionary class]]){
         NSString *appkey = gdtDict[@"appkey"];;
         NSString *placementId = gdtDict[@"placementId"];

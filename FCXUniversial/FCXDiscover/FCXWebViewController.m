@@ -7,11 +7,12 @@
 //
 
 #import "FCXWebViewController.h"
-#import "FCXOnlineConfig.h"
+#import "SKOnlineConfig.h"
 #import "FCXDefine.h"
 #import "UIViewController+Advert.h"
 #import "FCXShareManager.h"
 #import "UMMobClick/MobClick.h"
+#import "SKA.h"
 
 static const float FCXInitialProgressValue = 0.1f;
 static const float FCXInteractiveProgressValue = 0.5f;
@@ -55,7 +56,7 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
     shareManager.shareImage = [UIImage imageNamed:icon];
     
     [shareManager showInviteFriendsShareView];
-    [MobClick event:@"发现分享" label:self.shareTitle];
+    [SKA event:@"发现分享" label:self.shareTitle];
 }
 
 - (void)viewDidLoad {
@@ -76,9 +77,9 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
     
     
     CGFloat adHeight = 0;
-    if ([[FCXOnlineConfig fcxGetConfigParams:@"showAdmob" defaultValue:@"1"] boolValue]) {
+    if ([[SKOnlineConfig getConfigParams:@"showAdmob" defaultValue:@"0"] boolValue]) {
         adHeight = 50;
-        [self showAdmobBanner:CGRectMake(0, SCREEN_HEIGHT - 64 - 50, SCREEN_WIDTH, 50) adUnitID:[FCXOnlineConfig fcxGetConfigParams:@"AdmobID" defaultValue:self.admobID]];
+        [self showAdmobBanner:CGRectMake(0, SCREEN_HEIGHT - 64 - 50, SCREEN_WIDTH, 50) adUnitID:[SKOnlineConfig getConfigParams:@"AdmobID" defaultValue:self.admobID]];
     }
     
     self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 64 - adHeight)];
@@ -268,20 +269,34 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
 }
 
 - (UIBarButtonItem *)backItem {
+    UIButton *backBtn;
+    
     if (!_backItem) {
         UIColor *normalColor = self.navBackColor;
         UIColor *highlightedColor = [normalColor colorWithAlphaComponent:.5];
-        UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [backBtn setImage:[self backImage:normalColor] forState:UIControlStateNormal];
-        [backBtn setImage:[self backImage:highlightedColor] forState:UIControlStateHighlighted];
+        
+        if (_backImage) {
+            backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            [backBtn setImage:_backImage forState:UIControlStateNormal];
+            [backBtn setImage:_backImageHighlighted forState:UIControlStateHighlighted];
+            backBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+            backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -15, 0, 0);
+            backBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -15, 0, 0);
+            backBtn.frame = CGRectMake(0, 0, 60, 44);
+        } else {
+
+            backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            [backBtn setImage:[self backImage:normalColor] forState:UIControlStateNormal];
+            [backBtn setImage:[self backImage:highlightedColor] forState:UIControlStateHighlighted];
+            backBtn.frame = CGRectMake(0, 0, 50, 44);
+            backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
+            backBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 0);
+            backBtn.titleLabel.font = [UIFont systemFontOfSize:16];
+        }
         [backBtn setTitle:@"返回" forState:UIControlStateNormal];
         [backBtn setTitleColor:normalColor forState:UIControlStateNormal];
         [backBtn setTitleColor:highlightedColor forState:UIControlStateHighlighted];
-        backBtn.frame = CGRectMake(0, 0, 50, 44);
-        backBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
-        backBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 0);
         [backBtn addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
-        backBtn.titleLabel.font = [UIFont systemFontOfSize:17];
         _backItem = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
     }
     return _backItem;
@@ -298,7 +313,7 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
         [closeBtn setTitleColor:highlightedColor forState:UIControlStateHighlighted];
         [closeBtn setTitle:@"关闭" forState:UIControlStateNormal];
         closeBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -12, 0, 0);
-        closeBtn.titleLabel.font = [UIFont systemFontOfSize:16.5];
+        closeBtn.titleLabel.font = [UIFont systemFontOfSize:16];
         [closeBtn addTarget:self action:@selector(closeAction) forControlEvents:UIControlEventTouchUpInside];
         _closeItem = [[UIBarButtonItem alloc] initWithCustomView:closeBtn];
     }
