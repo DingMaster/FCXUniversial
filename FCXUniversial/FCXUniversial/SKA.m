@@ -11,10 +11,21 @@
 @implementation SKA
 
 + (void)event:(NSString *)eventId {
+    if (![eventId isKindOfClass:[NSString class]]) {
+        return;
+    }
     [self event:eventId label:eventId];
 }
 
 + (void)event:(NSString *)eventId label:(NSString *)label {
+    if (![eventId isKindOfClass:[NSString class]]) {
+        return;
+    }
+    
+    if (!label) {
+        label = eventId;
+    }
+
     Class MobClick = NSClassFromString(@"MobClick");
     if (MobClick) {
         [MobClick event:eventId label:label];
@@ -24,7 +35,7 @@
     
     Class MTA = NSClassFromString(@"MTA");
     if (MTA) {
-        [MTA trackCustomEvent:eventId args:@[eventId]];
+        [MTA trackCustomEvent:eventId args:@[label]];
     } else {
         NSLog(@"请导入腾讯统计库MTA");
     }
