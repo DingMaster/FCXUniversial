@@ -13,6 +13,7 @@
 #import "FCXShareManager.h"
 #import "UMMobClick/MobClick.h"
 #import "SKA.h"
+#import "NSDictionary+SafeValue.h"
 
 static const float FCXInitialProgressValue = 0.1f;
 static const float FCXInteractiveProgressValue = 0.5f;
@@ -26,37 +27,30 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
     NSUInteger _maxLoadCount;//Maximum number of load requests that was reached
     BOOL _interactive;//Load progress has reached the point where users may interact with the content
     UIProgressView *_progressView;
-    
+    CGFloat _adHeight;
 }
 @property (nonatomic, strong) NSURL *currentURL;
 @property (nonatomic, unsafe_unretained) float loadingProgress; //Between 0.0 and 1.0, the load progress of the current page
-
-@property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic, copy) NSString *shareTitle;
-
 @property (nonatomic, strong) UIBarButtonItem *backItem;
 @property (nonatomic, strong) UIBarButtonItem *closeItem;
-
-
+@property (nonatomic, strong, readwrite) FCXWebView *webView;
 
 @end
 
 @implementation FCXWebViewController
 
-#pragma mark - 分享
-
--(void)shareAction:(UIButton *)button {
-    FCXShareManager *shareManager = [FCXShareManager sharedManager];
-    shareManager.presentedController = self;
-    shareManager.shareTitle = self.shareTitle;
-    shareManager.shareContent = self.urlString;
-    shareManager.shareURL = self.urlString;
-    NSDictionary *infoPlist = [[NSBundle mainBundle] infoDictionary];
-    NSString *icon = [[infoPlist valueForKeyPath:@"CFBundleIcons.CFBundlePrimaryIcon.CFBundleIconFiles"] lastObject];
-    shareManager.shareImage = [UIImage imageNamed:icon];
-    
-    [shareManager showInviteFriendsShareView];
-    [SKA event:@"发现分享" label:self.shareTitle];
+#pragma mark - 解析参数
+- (void)parseParameters:(NSDictionary *)dict {
+    if (![dict isKindOfClass:[NSDictionary class]]) {
+        return;
+    }
+    self.title = dict[@"title"];
+    self.hideNavRightItem = [dict[@"hideNavRightItem"] boolValue];
+    NSString *url = dict[@"url"];
+    if ([url isKindOfClass:[NSString class]]) {
+        self.urlString = url;
+    }
 }
 
 - (void)viewDidLoad {
@@ -65,38 +59,67 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.navigationItem.leftBarButtonItem = self.backItem;
     
-    UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [rightBtn setImage:[UIImage imageNamed:@"nav_more"] forState:UIControlStateNormal];
-    //    [rightBtn setImage:[UIImage imageNamed:@"nav_more_h"] forState:UIControlStateHighlighted];
-    rightBtn.frame = CGRectMake(0, 0, 60, 44);
-    rightBtn.tag = 666;
-    rightBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 25, 0, 0);
-    [rightBtn addTarget:self action:@selector(shareAction:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
-    self.navigationItem.rightBarButtonItem = rightItem;
-    
-    
-    CGFloat adHeight = 0;
+    if (!_hideNavRightItem) {
+        UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [rightBtn setImage:[UIImage imageNamed:@"nav_more"] forState:UIControlStateNormal];
+        //    [rightBtn setImage:[UIImage imageNamed:@"nav_more_h"] forState:UIControlStateHighlighted];
+        rightBtn.frame = CGRectMake(0, 0, 60, 44);
+        rightBtn.tag = 666;
+        rightBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 25, 0, 0);
+        [rightBtn addTarget:self action:@selector(shareAction:) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
+        self.navigationItem.rightBarButtonItem = rightItem;
+    }
+
+    _adHeight = 0;
     if ([[SKOnlineConfig getConfigParams:@"showAdmob" defaultValue:@"0"] boolValue]) {
-        adHeight = 50;
+        _adHeight = 50;
         [self showAdmobBanner:CGRectMake(0, SCREEN_HEIGHT - 64 - 50, SCREEN_WIDTH, 50) adUnitID:[SKOnlineConfig getConfigParams:@"AdmobID" defaultValue:self.admobID]];
     }
     
-    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 64 - adHeight)];
-    self.webView.delegate = self;
-    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.urlString]]];
-    [self.view addSubview:self.webView];
-    
     _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 3)];
     [self.view addSubview:_progressView];
-    _progressView.progressTintColor = UICOLOR_FROMRGB(0x00bf12);
+    _progressView.progressTintColor = _progressColor ? _progressColor : UICOLOR_FROMRGB(0x00bf12);
     _progressView.trackTintColor = [UIColor clearColor];
     //更改进度条高度
     _progressView.transform = CGAffineTransformMakeScale(1.0f, 1.5f);
 }
 
+#pragma mark - 加载、绑定事件
+- (void)setUrlString:(NSString *)urlString {
+    _urlString = urlString;
+    [self.webView loadURLString:urlString];
+}
+
+- (void)loadRequest:(NSURLRequest *)request {
+    _urlString = request.URL.absoluteString;
+    [self.webView loadRequest:request];
+}
+
+- (void)loadURL:(NSURL *)url {
+    _urlString = url.absoluteString;
+    [self.webView loadURL:url];
+}
+
+- (void)loadURLString:(NSString *)urlString {
+    _urlString = urlString;
+    [self.webView loadURLString:urlString];
+}
+
+- (void)registerHandler:(NSString *)handlerName handler:(id)handler {
+    [self.webView registerHandler:handlerName handler:handler];
+}
+
+- (void)registerHandler:(NSString *)handlerName JSONHandler:(void (^)(id))JSONHandler {
+    [self.webView registerHandler:handlerName JSONHandler:JSONHandler];
+}
+
+- (void)callHandler:(NSString *)handlerName data:(id)data {
+    [self.webView callHandler:handlerName data:data];
+}
+
+#pragma mark - UIWebViewDelegate
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    
     if ([request.URL.path isEqualToString:completeRPCURLPath]) {
         [self completeLoadingProgress];
         return NO;
@@ -126,8 +149,7 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
     [self startProgress];
 }
 
-- (void)startProgress
-{
+- (void)startProgress {
     if (_loadingProgress < FCXInitialProgressValue) {
         self.loadingProgress = FCXInitialProgressValue;
     }
@@ -143,16 +165,14 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
     [self handleLoadRequestCompletion];
 }
 
-- (void)resetLoadingProgress
-{
+- (void)resetLoadingProgress {
     _progressView.hidden = NO;
     _maxLoadCount = _loadingCount = 0;
     _interactive = NO;
     self.loadingProgress = 0.0;
 }
 
-- (void)incrementLoadingProgress
-{
+- (void)incrementLoadingProgress {
     float progress = self.loadingProgress;
     float maxProgress = _interactive ? FCXFinalProgressValue : FCXInteractiveProgressValue;
     float remainPercent = (float)_loadingCount / (float)_maxLoadCount;
@@ -163,8 +183,7 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
     self.loadingProgress = progress;
 }
 
-- (void)completeLoadingProgress
-{
+- (void)completeLoadingProgress {
     self.loadingProgress = 1.0;
 }
 
@@ -213,6 +232,153 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
     }
 }
 
+#pragma mark - 分享
+-(void)shareAction:(UIButton *)button {
+    FCXShareManager *shareManager = [FCXShareManager sharedManager];
+    shareManager.presentedController = self;
+    shareManager.shareTitle = self.shareTitle;
+    shareManager.shareContent = self.urlString;
+    shareManager.shareURL = self.urlString;
+    NSDictionary *infoPlist = [[NSBundle mainBundle] infoDictionary];
+    NSString *icon = [[infoPlist valueForKeyPath:@"CFBundleIcons.CFBundlePrimaryIcon.CFBundleIconFiles"] lastObject];
+    shareManager.shareImage = [UIImage imageNamed:icon];
+    
+    [shareManager showInviteFriendsShareView];
+    [SKA event:@"发现分享" label:self.shareTitle];
+}
+
+#pragma mark - h5事件处理
+- (void)skAction:(NSDictionary *)parameters {
+    NSInteger action = [parameters integerForKey:@"action"];
+    switch (action) {
+        case 0:
+        {//修改标题
+            self.title = [parameters stringForKey:@"title"];
+        }
+            break;
+        case 1:
+        {//打开新的webView
+            NSString *url = [parameters stringForKey:@"url"];
+            if (url.length < 1) {
+                return;
+            }
+            
+            FCXWebViewController *webVC = [[FCXWebViewController alloc] init];
+            webVC.title = [parameters stringForKey:@"title"];
+            webVC.backImage = self.backImage;
+            webVC.backImageHighlighted = self.backImageHighlighted;
+            webVC.navBackColor = self.navBackColor;
+            webVC.progressColor = self.progressColor;
+            webVC.admobID = _admobID;
+            webVC.hideNavRightItem = [parameters boolForKey:@"hideNavRightItem"];
+            [webVC loadURLString:url];
+            [self.navigationController pushViewController:webVC animated:YES];
+        }
+            break;
+        case 2:
+        {//打开Native界面
+            Class cls = NSClassFromString(@"SKMediator");
+            if (cls) {
+                [cls openPage:self.navigationController parameters:parameters];
+            }
+        }
+            break;
+        case 3:
+        {//复制文字到剪切板
+            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+            pasteboard.string = [parameters nonullStringForKey:@"content"];
+        }
+            break;
+        case 4:
+        {//打开第三方APP
+            NSString *scheme = [parameters stringForKey:@"scheme"];
+            if (scheme) {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:scheme]];
+                return;
+            }
+            [self openApp:[parameters integerForKey:@"platform"]];
+        }
+            break;
+        case 5:
+        {//给上个页面传参
+            
+        }
+            break;
+        default:
+            break;
+    }
+}
+
++ (BOOL)openPage:(UINavigationController *)navigationController parameters:(NSDictionary *)parameters {
+    return YES;
+}
+
+- (void)openApp:(NSInteger)platform {
+    id obj;
+    SEL selector;
+    switch (platform) {
+        case 0:
+        {
+            obj = NSClassFromString(@"WXApi");
+            selector = @selector(openWXApp);
+        }
+            break;
+        case 1:
+        {
+            obj = NSClassFromString(@"QQApiInterface");
+            selector = @selector(openQQ);
+        }
+            break;
+        case 2:
+        {
+            obj = NSClassFromString(@"WeiboSDK");
+            selector = @selector(openWeiboApp);
+        }
+            break;
+        default:
+            selector = nil;
+            break;
+    }
+    
+    if (obj && [obj respondsToSelector:selector]) {
+        [obj performSelectorOnMainThread:selector withObject:nil waitUntilDone:YES];
+    }
+}
+
+
++ (BOOL) openWXApp {
+    return YES;
+}
+
++ (BOOL)openQQ {
+    return YES;
+}
+
++ (BOOL)openWeiboApp {
+    return YES;
+}
+
+#pragma mark - get
+- (FCXWebView *)webView {
+    if (!_webView) {
+        _webView = [[FCXWebView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, [UIScreen mainScreen].bounds.size.height - 64 - _adHeight)];
+        [_webView setWebViewDelegate:self];
+        __weak typeof(self) weakSelf = self;
+        [_webView registerHandler:@"SKFunc" JSONHandler:^(NSDictionary *parameters) {
+            if ([parameters isKindOfClass:[NSDictionary class]] &&
+                parameters[@"action"]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf skAction:parameters];
+                });
+            }
+        }];
+        [self.view addSubview:_webView];
+        [self.view bringSubviewToFront:_progressView];
+    }
+    return _webView;
+}
+
+
 - (NSString *)shareTitle {
     if (_shareTitle) {
         return _shareTitle;
@@ -225,7 +391,6 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
 }
 
 - (UIColor *)navBackColor {
-
     if (!_navBackColor) {
         if (self.navigationController.navigationBar.tintColor) {
             _navBackColor = self.navigationController.navigationBar.tintColor;
@@ -246,10 +411,8 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetStrokeColorWithColor(context, color.CGColor);
     CGContextSetLineWidth(context, lineWidth);
-    
     CGContextSetLineCap(context,
                         kCGLineCapSquare);
-    
     
     CGContextBeginPath(context);//标记
     CGContextMoveToPoint(context,
@@ -258,11 +421,9 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
                             lineWidth, height/2.0);
     CGContextAddLineToPoint(context,
                             width - lineWidth, height - lineWidth);
-    
     CGContextDrawPath(context,
                       kCGPathStroke);
     //    CGContextStrokePath(context);//绘画路径
-    
     UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return theImage;
@@ -270,7 +431,6 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
 
 - (UIBarButtonItem *)backItem {
     UIButton *backBtn;
-    
     if (!_backItem) {
         UIColor *normalColor = self.navBackColor;
         UIColor *highlightedColor = [normalColor colorWithAlphaComponent:.5];
@@ -284,7 +444,6 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
             backBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -15, 0, 0);
             backBtn.frame = CGRectMake(0, 0, 60, 44);
         } else {
-
             backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
             [backBtn setImage:[self backImage:normalColor] forState:UIControlStateNormal];
             [backBtn setImage:[self backImage:highlightedColor] forState:UIControlStateHighlighted];
@@ -306,7 +465,7 @@ NSString *completeRPCURLPath = @"webviewprogressproxy:///complete";
     if (!_closeItem) {
         UIColor *normalColor = self.navBackColor;
         UIColor *highlightedColor = [normalColor colorWithAlphaComponent:.5];
-
+        
         UIButton *closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         closeBtn.frame = CGRectMake(0, 0, 50, 44);
         [closeBtn setTitleColor:normalColor forState:UIControlStateNormal];
